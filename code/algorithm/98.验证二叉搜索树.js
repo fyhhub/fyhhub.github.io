@@ -1,0 +1,44 @@
+/*
+ * @lc app=leetcode.cn id=98 lang=javascript
+ *
+ * [98] 验证二叉搜索树
+ */
+
+// @lc code=start
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {boolean}
+ */
+var isValidBST = function (root) {
+  var lastVal = -Number.MAX_VALUE;
+  function dfs(root) {
+    // 没有节点也返回true
+    if (!root) return true;
+    // 如果左子树是合法的搜索树
+    if (dfs(root.left)) {
+      // 上次记录的值和当前节点比较 如果当前节点更大，说明是二叉搜索树，继续向右递归
+      if (root.val > lastVal) {
+        lastVal = root.val;
+        return dfs(root.right);
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+  return dfs(root);
+};
+// @lc code=end
+
+// @after-stub-for-debug-begin
+module.exports = isValidBST;
+// @after-stub-for-debug-end

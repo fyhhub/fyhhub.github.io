@@ -1,0 +1,27 @@
+// you can change config here
+$code-lang: "css" "html" "js" "ts" "vue";
+.sidebar-links {
+  a {
+    font-size: 13px;
+  }
+  transition: none!important;
+}
+
+
+.dropdown-subitem {
+  .nav-link {
+    display: flex;
+    align-items: center;
+    &.active {
+      img {
+        filter: drop-shadow(1000px 0 0 var(--theme-color));
+      }
+    }
+    img {
+      width: 14px;
+      height: 14px;
+      filter: drop-shadow(1000px 0 0 var(--dark-grey));
+      transform: translate(-1000px);
+    }
+  }
+}
