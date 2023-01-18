@@ -1,0 +1,1312 @@
+---
+index: 4
+---
+# Vue.js 设计与实现阅读笔记（四）第 4 章-响应系统的作用与实现
+
+## 4.1 响应式数据与副作用函数
+
+副作用函数指的是会产生副作用的函数，如下面的代码所示：
+```js
+function effect() {
+  document.body.innerText = 'hello vue3'
+}
+```
+这段代码修改了body的innerText, 但是其他的effect依然可能修改或获取这个`innerText`, 所以这个`effect`的函数影响了其他函数的执行，它就是有副作用的。
+
+
+同样的，例如下面的val, 被effect函数修改，但它是全局变量，其他函数也可能会用到，同样存在副作用。
+```js
+var val = 1
+function effect() {
+  val = 2
+}
+```
+
+**那么什么是响应式数据呢？**
+
+我们希望有如下功能， 执行`obj.text`赋值，自动执行effect函数
+```js
+const obj = {text: '123'}
+function effect() {
+  document.body.innerText = obj.text
+}
+
+
+obj.text = 'hello' // 我们希望，执行这一行之后，自动执行effect函数
+```
+
+下面我们来探讨如何实现吧。
+
+
+## 4.2 响应式数据的基本实现
+如何实现响应式数据呢，有以下两点
+
+- 当副作用函数`effect`执行时，会触发字段 `obj.text`的读取操作
+- 当修改`obj.text`时，会触发`obj.text`的设置操作
+
+![image.png](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/7c29989e49784305961a48cc99a4df21~tplv-k3u1fbpfcp-zoom-1.image)
+
+我们可以想象出一个`bucket（桶）`，当触发`读取`操作时，就把`副作用effect`放入到这个`桶`中。
+当触发`设置`操作时，就把桶中的`effect`拿出来执行，可以有如下代码
+```js
+// 存储副作用函数的桶
+const bucket = new Set()
+
+// 原始数据
+const data = { text: 'hello world' }
+// 对原始数据的代理
+const obj = new Proxy(data, {
+  // 拦截读取操作
+  get(target, key) {
+    // 将副作用函数 effect 添加到存储副作用函数的桶中
+    bucket.add(effect)
+    // 返回属性值
+    return target[key]
+  },
+  // 拦截设置操作
+  set(target, key, newVal) {
+    // 设置属性值
+    target[key] = newVal
+    // 把副作用函数从桶里取出并执行
+    bucket.forEach(fn => fn())
+  }
+})
+
+function effect() {
+  document.body.innerText = obj.text
+}
+effect()
+```
+
+## 4.3 设计一个完善的响应式系统
+不难看出，响应式系统的工作流程如下：
+
+- 当副作用函数`effect`执行时，会触发字段 `obj.text`的读取操作
+- 当修改`obj.text`时，会触发`obj.text`的设置操作
+
+看上去简单，但是还有点问题，我们把`effect`名字写死了，我们希望是一个匿名函数。
+
+```diff
+// 存储副作用函数的桶
+const bucket = new Set()
+let activeEffect
+
+// 原始数据
+const data = { text: 'hello world' }
+// 对原始数据的代理
+const obj = new Proxy(data, {
+  // 拦截读取操作
+  get(target, key) {
++    if (activeEffect) {
+        // 将副作用函数 activeEffect 添加到存储副作用函数的桶中
+        bucket.add(activeEffect)
++    }
+    // 返回属性值
+    return target[key]
+  },
+  // 拦截设置操作
+  set(target, key, newVal) {
+    // 设置属性值
+    target[key] = newVal
+    // 把副作用函数从桶里取出并执行
+    bucket.forEach(fn => fn())
+  }
+})
+
+
+// 用一个全局变量存储当前激活的 effect 函数
++ function effect(fn) {
++  // 当调用 effect 注册副作用函数时，将副作用函数复制给 activeEffect
++  activeEffect = fn
+  // 执行副作用函数
++  fn()
++}
+```
+上述代码中，我们修改了`effect`函数。支持我们传入一个匿名函数
+
+测试代码：
+```js
+effect(() => {
+  console.log('effect run')
+  document.body.innerText = obj.text
+})
+
+setTimeout(() => {
+  obj.text2 = 'hello vue3'
+}, 1000)
+```
+
+上面的代码所示，由于副作用函数已经存储到了 activeEffect 中，所以在 get 拦截函数内应该把 activeEffect 收集到“桶”中，这样响应系统就不依赖副作用函数的名字了。 
+
+但如果我们再对这个系统稍加测试，例如在响应式数据 obj 上设置一个不存在的属性时：
+
+```js
+effect(() => {
+  console.log('effect run')
+  document.body.innerText = obj.text
+})
+
+setTimeout(() => {
+  obj.notExist = 'hello'
+}, 1000)
+```
+上面的代码中，肯定是不可能触发effect函数的，因为新的字段`notExist`并没有跟副作用函数产生联系。
+
+**那么如何将想要操作的属性，自动与effect函数产生联系呢？**
+
+之前的Set结构肯定不可以了，我们可以使用下面这种数据结构:
+
+```
+WeakMap({
+    target: Map({
+       key1: Set(effect1, effect2),
+       key2: Set(effect1, effect2)
+    }),
+    target2: Map({
+       key1: Set(effect1, effect2),
+       key2: Set(effect1, effect2)
+    }),
+})
+```
+
+所以修改一下之前的代码:
+
+```diff
+// 存储副作用函数的桶
++ const bucket = new WeakMap()
+
+// 原始数据
+const data = { text: 'hello world' }
+// 对原始数据的代理
+const obj = new Proxy(data, {
+  // 拦截读取操作
+  get(target, key) {
++    if (!activeEffect) return target[key]
+    // 将副作用函数 activeEffect 添加到存储副作用函数的桶中
++    let depsMap = bucket.get(target)
++    if (!depsMap) {
++      bucket.set(target, (depsMap = new Map()))
++    }
++    let deps = depsMap.get(key)
++    if (!deps) {
++      depsMap.set(key, (deps = new Set()))
++    }
++    deps.add(activeEffect)
+
+    // 返回属性值
+    return target[key]
+  },
+  // 拦截设置操作
+  set(target, key, newVal) {
+    // 设置属性值
+    target[key] = newVal
+    // 把副作用函数从桶里取出并执行
++    const depsMap = bucket.get(target)
++    if (!depsMap) return
++    const effects = depsMap.get(key)
+    effects && effects.forEach(fn => fn())
+  }
+})
+
+
+// 用一个全局变量存储当前激活的 effect 函数
+let activeEffect
+function effect(fn) {
+  // 当调用 effect 注册副作用函数时，将副作用函数复制给 activeEffect
+  activeEffect = fn
+  // 执行副作用函数
+  fn()
+}
+```
+可以看到，我们不再单纯的从`桶`中，获取effects函数。而是借助`WeakMap`取出target对象下`key`所对应的effects。
+
+如下图：
+
+![image.png](https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/65a12662c2ac474fa7e527f243e899a3~tplv-k3u1fbpfcp-watermark.image?)
+
+
+
+在目前的实现中，当读取属性值时，我们直接在 get 拦截函数里编写把副作用函数收集 到“桶”里的这部分逻辑，但更好的做法是将这部分逻辑单独封装到一个 `track 函数`中，函数的名字叫 track 是为了表达追踪的含义。同样，我们也可以把触发副作用函数重新执行的逻辑封装到 `trigger 函数`中：
+
+```js
+// 存储副作用函数的桶
+const bucket = new WeakMap()
+
+// 原始数据
+const data = { text: 'hello world' }
+// 对原始数据的代理
+const obj = new Proxy(data, {
+  // 拦截读取操作
+  get(target, key) {
+    // 将副作用函数 activeEffect 添加到存储副作用函数的桶中
+    track(target, key)
+    // 返回属性值
+    return target[key]
+  },
+  // 拦截设置操作
+  set(target, key, newVal) {
+    // 设置属性值
+    target[key] = newVal
+    // 把副作用函数从桶里取出并执行
+    trigger(target, key)
+  }
+})
+
+function track(target, key) {
+  let depsMap = bucket.get(target)
+  if (!depsMap) {
+    bucket.set(target, (depsMap = new Map()))
+  }
+  let deps = depsMap.get(key)
+  if (!deps) {
+    depsMap.set(key, (deps = new Set()))
+  }
+  deps.add(activeEffect)
+}
+
+function trigger(target, key) {
+  const depsMap = bucket.get(target)
+  if (!depsMap) return
+  const effects = depsMap.get(key)
+  effects && effects.forEach(fn => fn())
+}
+
+// 用一个全局变量存储当前激活的 effect 函数
+let activeEffect
+function effect(fn) {
+  // 当调用 effect 注册副作用函数时，将副作用函数复制给 activeEffect
+  activeEffect = fn
+  // 执行副作用函数
+  fn()
+}
+
+
+// 测试代码
+effect(() => {
+  console.log('effect run')
+  document.body.innerText = obj.text
+})
+
+setTimeout(() => {
+  trigger(data, 'text')
+}, 1000)
+```
+
+
+## 4.4 分支切换与 cleanup
+
+分支切换可能会产生遗留的副作用函数， 以这段代码为例:
+
+```js
+const data = { ok: true, text: 'hello world' }
+const obj = new Proxy(data, { /* ... */ })
+
+effect(function effectFn() {
+  document.body.innerText = obj.ok ? obj.text : 'not'
+})
+```
+
+假设`obj.ok` 默认为true, 依赖树如下：
+
+```js
+Map({
+   obj: Map({
+     ok: Set(effectFn),
+     text: Set(effectFn)
+   })
+})
+```
+不难看出，副作用函数分别被`ok`和`text`依赖收集。
+
+但是如果`obj.ok`被修改成`false`, 我们**期望的**依赖结构为：
+
+```js
+Map({
+   obj: Map({
+     ok: Set(effectFn),
+     // text: Set(effectFn)
+   })
+})
+```
+但是，实际上text的依赖仍然存在，我们并没有使用到`obj.text`, 如果修改`obj.text`，还是会重新执行effect。所以这样是有问题的！ 我们并不希望切换为false的时候，text的依赖还存在。
+
+**解决这个问题的思路很简单，每次副作用函数执行时，我们可以 先把它从所有与之关联的依赖集合中删除**
+
+用一张图来解释：
+
+
+![image.png](https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/3580b850b0a44a259e0bf0017f516ddb~tplv-k3u1fbpfcp-watermark.image?)
+
+简单来讲，就是`effect`和`effect Set`之间建立了联系。每次收集依赖之前，**获取`effectFn`对应的依赖集合，然后把自己删除了，相当于解除了关联**。
+
+```diff
+// 存储副作用函数的桶
+const bucket = new WeakMap()
+
+// 原始数据
+const data = { ok: true, text: 'hello world' }
+// 对原始数据的代理
+const obj = new Proxy(data, {
+  // 拦截读取操作
+  get(target, key) {
+    // 将副作用函数 activeEffect 添加到存储副作用函数的桶中
+    track(target, key)
+    // 返回属性值
+    return target[key]
+  },
+  // 拦截设置操作
+  set(target, key, newVal) {
+    // 设置属性值
+    target[key] = newVal
+    // 把副作用函数从桶里取出并执行
+    trigger(target, key)
+  }
+})
+
+function track(target, key) {
+  let depsMap = bucket.get(target)
+  if (!depsMap) {
+    bucket.set(target, (depsMap = new Map()))
+  }
+  let deps = depsMap.get(key)
+  if (!deps) {
+    depsMap.set(key, (deps = new Set()))
+  }
+  deps.add(activeEffect)
+
+  // effect 关联属性对应的 Set(effects)
++  activeEffect.deps.push(deps)
+}
+
+function trigger(target, key) {
+  const depsMap = bucket.get(target)
+  if (!depsMap) return
+  const effects = depsMap.get(key)
+
+  effects && effects.forEach(effectFn => effectFn())
+}
+
+// 用一个全局变量存储当前激活的 effect 函数
+let activeEffect
+function effect(fn) {
+  const effectFn = () => {
++   cleanup(effectFn)
+    // 当调用 effect 注册副作用函数时，将副作用函数复制给 activeEffect
+    activeEffect = effectFn
+    fn()
+  }
+  // activeEffect.deps 用来存储所有与该副作用函数相关的依赖集合
++  effectFn.deps = []
+  // 执行副作用函数
+  effectFn()
+}
+
++ function cleanup(effectFn) {
++   for (let i = 0; i < effectFn.deps.length; i++) {
++     const deps = effectFn.deps[i]
++     deps.delete(effectFn)
++   }
++  effectFn.deps.length = 0
++ }
+```
+
+我们的响应系统已经可以避免副作用函数产生遗留了。但如果你尝试运行代码，会发现目前的实现会导致无限循环执行，问题 出在 trigger 函数中
+
+```js
+effects && effects.forEach(effectFn => effectFn())
+```
+如果你在一个循环中，添加和删除Set，会导致无限遍历:
+
+```js
+newSet.forEach(item => {
+  set.delete(1) // 相当于cleanup
+  set.add(1) // 相当于track收集依赖
+})
+```
+
+我们修改一下`trigger`函数
+
+```diff
+function trigger(target, key) {
+  const depsMap = bucket.get(target)
+  if (!depsMap) return
+  const effects = depsMap.get(key)
+
+  const effectsToRun = new Set()
++  effects && effects.forEach(effectFn => effectsToRun.add(effectFn))
++  effectsToRun.forEach(effectFn => effectFn())
+-  effects && effects.forEach(effectFn => effectFn())
+}
+```
+我们新构造了 effectsToRun 集合并遍历它， 代替直接遍历 effects 集合，从而避免了无限执行。
+
+
+## 4.5 嵌套的effect 与 effect栈
+我们思考一下下面的代码。
+
+```js
+effect(function effectFn1() {
+  console.log('effectFn1 执行')
+  effect(function effectFn2() {
+    console.log('effectFn2 执行')
+    temp2 = obj.bar
+  })
+  temp1 = obj.foo
+})
+```
+在初始执行的时候，自然会触发`effectFn1`和`effectFn2`，但是当你修改`obj.foo`的时候，却只会执行`effectFn2`。为什么呢？
+
+在前面，我们是用过这样的方式获取`effect`的：
+
+```js
+activeEffect = effectFn
+```
+初次执行完后，最后一次执行后，`activeEffect === effectFn2`, 此时`obj.foo`收集的其实是`effectFn2`。
+
+那怎么解决呢？我们可以维护一个栈的结构, 代码如下：
+```diff
+// 用一个全局变量存储当前激活的 effect 函数
+let activeEffect
+// effect 栈
+const effectStack = []
+
+function effect(fn) {
+  const effectFn = () => {
+    cleanup(effectFn)
+    // 当调用 effect 注册副作用函数时，将副作用函数复制给 activeEffect
+    activeEffect = effectFn
+    // 在调用副作用函数之前将当前副作用函数压栈
++    effectStack.push(effectFn)
+    fn()
+    // 在当前副作用函数执行完毕后，将当前副作用函数弹出栈，并还原 activeEffect 为之前的值
++    effectStack.pop()
++    activeEffect = effectStack[effectStack.length - 1]
+  }
+  // activeEffect.deps 用来存储所有与该副作用函数相关的依赖集合
+  effectFn.deps = []
+  // 执行副作用函数
+  effectFn()
+}
+```
+
+
+## 4.6 避免无限递归循环
+思考如下代码：
+```js
+effect(() => {
+  obj.foo = obj.foo + 1
+})
+```
+最后会导致无限递归。
+
+在这个语句中，既会读取 obj.foo 的值，又会设置 obj.foo 的 值，而这就是导致问题的根本原因。
+
+基于此，我们可以在 trigger 动作发生时增加守卫条件：**如果 trigger 触发执行的副作用函数与当前正在执行的副 作用函数相同，则不触发执行**
+
+```diff
+function trigger(target, key) {
+  const depsMap = bucket.get(target)
+  if (!depsMap) return
+  const effects = depsMap.get(key)
+
+  const effectsToRun = new Set()
+  effects && effects.forEach(effectFn => {
++    if (effectFn !== activeEffect) {
++      effectsToRun.add(effectFn)
++    }
+  })
+  effectsToRun.forEach(effectFn => effectFn())
+  // effects && effects.forEach(effectFn => effectFn())
+}
+```
+
+
+## 4.7 调度执行
+思考下面的代码：
+```js
+const data = {foo: 1}
+
+const obj = new Proxy(data, {...})
+
+effect(() => {
+  console.log(obj.foo)
+})
+
+obj.foo++
+
+console.log('结束了')
+```
+
+正常来讲，会打印如下内容：
+```js
+1
+2
+结束了
+```
+
+如果我们想实现，这样的输出呢？
+```js
+1
+结束了
+2
+```
+
+你可能会想到把`console.log`放到上面。但有没有更好的办法呢？
+
+
+其实我们可以设计一个选项参数，允许指定调度器
+```js
+effect(() => {
+  console.log(obj.foo)
+}, {
+  scheduler(fn) {
+    // ...
+  }
+})
+```
+
+我们修改一下`effect`函数的实现：
+
+```diff
+function effect(fn, options = {}) {
+  const effectFn = () => {
+    cleanup(effectFn)
+    // 当调用 effect 注册副作用函数时，将副作用函数复制给 activeEffect
+    activeEffect = effectFn
+    // 在调用副作用函数之前将当前副作用函数压栈
+    effectStack.push(effectFn)
+    fn()
+    // 在当前副作用函数执行完毕后，将当前副作用函数弹出栈，并还原 activeEffect 为之前的值
+    effectStack.pop()
+    activeEffect = effectStack[effectStack.length - 1]
+  }
+  // 将 options 挂在到 effectFn 上
++  effectFn.options = options
+  // activeEffect.deps 用来存储所有与该副作用函数相关的依赖集合
+  effectFn.deps = []
+  // 执行副作用函数
+  effectFn()
+}
+```
+
+修改一下`trigger`函数:
+
+```diff
+function trigger(target, key) {
+  const depsMap = bucket.get(target)
+  if (!depsMap) return
+  const effects = depsMap.get(key)
+
+  const effectsToRun = new Set()
+  effects && effects.forEach(effectFn => {
+    if (effectFn !== activeEffect) {
+      effectsToRun.add(effectFn)
+    }
+  })
+  effectsToRun.forEach(effectFn => {
++    if (effectFn.options.scheduler) {
++      effectFn.options.scheduler(effectFn)
++    } else {
++      effectFn()
++    }
+  })
+}
+```
+
+有了上面的代码实现。我们修改一下之前的例子
+
+```js
+const data = {foo: 1}
+
+const obj = new Proxy(data, {...})
+
+effect(() => {
+  console.log(obj.foo)
+}, {
+  scheduler(effect) {
+    setTimeout(effect)
+  }
+})
+
+obj.foo++
+
+console.log('结束了')
+```
+最后就能打印出我们想要的效果：
+```
+1
+结束了
+2
+```
+
+---
+分割一下====
+
+大家再来思考一个问题：
+```js
+const data = {foo: 1}
+
+const obj = new Proxy(data, {...})
+
+effect(() => {
+  console.log(obj.foo)
+})
+
+obj.foo++
+obj.foo++
+```
+上面的代码会打印三次:
+```
+1
+2
+3
+```
+如果我不想关心中间的状态，只需要最开始和最后的状态，如果用调度器实现呢？
+
+我们可以这么做：
+
+```js
+
+// =====================
+// 代码实现
+const jobQueue = new Set()
+const p = Promise.resolve()
+// 一个标志代表是否正在刷新队列
+let isFlushing = false
+function flushJob() {
+  // 如果队列正在刷新，则什么都不做
+  if (isFlushing) return
+  // 设置为 true，代表正在刷新
+  isFlushing = true
+  // 在微任务队列中刷新 jobQueue 队列
+  p.then(() => {
+    jobQueue.forEach(job => job())
+  }).finally(() => {
+    isFlushing = false
+  })
+}
+// =====================
+
+// 示例代码
+effect(() => {
+  console.log(obj.foo)
+}, {
+  scheduler(fn) {
+    jobQueue.add(fn)
+    flushJob()
+  }
+})
+
+obj.foo++
+obj.foo++
+```
+
+
+
+## 4.8 计算属性 computed 与 lazy
+
+computed的核心在于这几点:
+
++ **lazy 可通过options设置，当它为true时，不会立即执行副作用函数**
++ **副作用函数可以手动调用，getter可以返回值**
++ **对于计算属性的effect函数来说，它内部的响应式数据收集的会是计算属性的effect**
++ **计算属性的get和set没有track和trigger，需要手动调用**
++ **当响应式数据变化时，dirty设置为true**
+
+```js
+function computed(getter) {
+  let value
+  let dirty = true
+
+  const effectFn = effect(getter, {
+    lazy: true,
+    scheduler() {
+      if (!dirty) {
+        dirty = true
+        trigger(obj, 'value')
+      }
+    }
+  })
+  
+  const obj = {
+    get value() {
+      if (dirty) {
+        value = effectFn()
+        dirty = false
+      }
+      track(obj, 'value')
+      return value
+    }
+  }
+
+  return obj
+}
+```
+
+```diff
+function effect(fn, options = {}) {
+  const effectFn = () => {
+    cleanup(effectFn)
+    // 当调用 effect 注册副作用函数时，将副作用函数复制给 activeEffect
+    activeEffect = effectFn
+    // 在调用副作用函数之前将当前副作用函数压栈
+    effectStack.push(effectFn)
++    const res = fn()
+    // 在当前副作用函数执行完毕后，将当前副作用函数弹出栈，并还原 activeEffect 为之前的值
+    effectStack.pop()
+    activeEffect = effectStack[effectStack.length - 1]
+
++    return res
+  }
+  // 将 options 挂在到 effectFn 上
+  effectFn.options = options
+  // activeEffect.deps 用来存储所有与该副作用函数相关的依赖集合
+  effectFn.deps = []
+  // 执行副作用函数
++  if (!options.lazy) {
+    effectFn()
++  }
+
++  return effectFn
+}
+```
+
+
+我们来大致走一下流程：
++ 创建计算属性
+  ```js
+  const sumRes = computed(() => obj.foo + obj.bar)
+  ```
+  计算属性`effect`函数会被创建，并且lazy 不会立刻执行
+ 
++ 访问计算属性
+  ```js
+  console.log(sumRes.value)
+  ```
+  1. 刚开始dirty为true, 会调用计算属性的effect函数，计算sumRes，dirty为false.
+  2. 在计算过程中，会触发`obj.foo`和`obj.bar`的依赖收集，它们会收集计算属性的effect函数
+  3. 计算完成后，手动调用`track`，让计算属性收集一下自己getter的effect函数
+
++ 修改响应式变量
+  ```js
+  obj.foo ++
+  ```
+  
+  触发get方法，会执行`scheduler`方法，判断`dirty === false`, 设置`dirty = true`, 然后执行之前计算属性自己收集的getter副作用函数, 最后重新计算新值。
+  ```
+  scheduler() {
+      if (!dirty) {
+        dirty = true
+        trigger(obj, 'value')
+      }
+  }
+  ```
+  
+  
+## 4.9 watch的实现原理
+
+**watch 的实现本质上就是利用了 effect 以及 options.scheduler 选项**
+
+我们先来实现一个最简单的watch
+
+例子：
+```js
+watch(() => obj.foo, (newVal, oldVal) => {
+  console.log(newVal, oldVal)
+})
+```
+
+实现代码
+```js
+function watch(source, cb, options = {}) {
+  let getter
+  if (typeof source === 'function') {
+    getter = source
+  }
+
+  let oldValue, newValue
+
+  const job = () => {
+    newValue = effectFn()
+    cb(oldValue, newValue)
+    oldValue = newValue
+  }
+
+  const effectFn = effect(
+    () => getter(),
+    {
+      lazy: true,
+      scheduler: () => {
+        job()
+      }
+    }
+  )
+  oldValue = effectFn()
+}
+```
+可以看到，代码难度不大：
+
+1. 会将我们传入的getter,作为effect函数的getter
+2. 我们设置了`lazy`为true, 不会立即执行。
+    
+   然后实现了`scheduler`调度器，会执行我们的回调函数。
+   
+   
+3. 在初始化时，会先调用getter缓存一下最新的值，这样我们在初次修改数据时，就能拿到旧的值了。
+
+
+---
+上面只实现了最基础的功能，其实`watch`还支持立即执行，就像下面这样：
+```js
+watch(() => obj.foo, (newVal, oldVal) => {
+  console.log(newVal, oldVal)
+}, {
+  immediate: true // 立即执行
+})
+```
+
+我们修改一下实现代码：
+
+```diff
+function watch(source, cb, options = {}) {
+  let getter
+  if (typeof source === 'function') {
+    getter = source
+  }
+
+  let oldValue, newValue
+
+  const job = () => {
+    newValue = effectFn()
+    cb(oldValue, newValue)
+    oldValue = newValue
+  }
+
+  const effectFn = effect(
+    // 执行 getter
+    () => getter(),
+    {
+      lazy: true,
+      scheduler: () => {
+        job()
+      }
+    }
+  )
+  
++  if (options.immediate) {
++    job()
++  } else {
+    oldValue = effectFn()
++  }
+}
+```
+
+这样就可以在watch初始化时执行一遍回调了。
+
+
+---
+除此之外，`watch`还支持异步执行回调函数，如下：
+```js
+watch(() => obj.foo, (newVal, oldVal) => {
+  console.log(newVal, oldVal)
+}, {
+  immediate: true,
+  flush: 'post'
+})
+```
+
+实现起来同样简单：
+```diff
+function watch(source, cb, options = {}) {
+  let getter
+  if (typeof source === 'function') {
+    getter = source
+  } else {
+    getter = () => traverse(source)
+  }
+
+  let oldValue, newValue
+
+  const job = () => {
+    newValue = effectFn()
+    cb(oldValue, newValue)
+    oldValue = newValue
+  }
+
+  const effectFn = effect(
+    // 执行 getter
+    () => getter(),
+    {
+      lazy: true,
+      scheduler: () => {
++        if (options.flush === 'post') {
++          const p = Promise.resolve()
++          p.then(job)
++        } else {
+          job()
++        }
+      }
+    }
+  )
+  
+  if (options.immediate) {
+    job()
+  } else {
+    oldValue = effectFn()
+  }
+}
+```
+
+
+---
+
+大家可能发现，getter的写法都是函数的写法，`watch`应该也支持直接观察对象的变化
+
+```js
+watch(obj /*此处*/, (newVal, oldVal) => {
+  console.log(newVal, oldVal)
+}, {
+  immediate: true,
+  flush: 'post'
+})
+```
+
+我们来修改一下获取`getter`的地方：
+```diff
++function traverse(value, seen = new Set()) {
++  if (typeof value !== 'object' || value === null || seen.has(value)) return
++  seen.add(value)
++  for (const k in value) {
++    traverse(value[k], seen)
++  }
++  return value
++}
+
+function watch(source, cb, options = {}) {
+  let getter
+  if (typeof source === 'function') {
+    getter = source
++  } else {
++    getter = () => traverse(source)
++  }
+
+  let oldValue, newValue
+
+  const job = () => {
+    newValue = effectFn()
+    cb(oldValue, newValue)
+    oldValue = newValue
+  }
+
+  const effectFn = effect(
+    // 执行 getter
+    () => getter(),
+    {
+      lazy: true,
+      scheduler: () => {
+        if (options.flush === 'post') {
+          const p = Promise.resolve()
+          p.then(job)
+        } else {
+          job()
+        }
+      }
+    }
+  )
+  
+  if (options.immediate) {
+    job()
+  } else {
+    oldValue = effectFn()
+  }
+}
+```
+
+不难看出，`traverse`会递归遍历对象下所有的属性。
+
+**所以推荐大家使用`watch`的时候，getter使用函数的写法，可以精确到具体的属性！**
+
+## 4.10 过期的副作用
+
+我们有时会遇到如下场景，同样的接口先后调用了两次
+
++ 发送请求A
++ 发送请求B
+
+我们期望的是最终获取到的是B, 但是如果B接口比较慢，会导致A的结果覆盖B。
+
+其实这种问题，我们可以使用`watch`的`onInvalidate`来解决。
+
+
+`onInvalidate`是干嘛的呢？
+
+我们先来看一段代码，当数据变化时，会重新请求接口：
+
+```js
+watch(() => obj.foo, async (newVal, oldVal, onInvalidate) => {
+  const res = await fetch()
+  finallyData = res
+  console.log(finallyData)
+})
+```
+很明显，会导致出现上面的问题。我们修改一下：
+
+```js
+watch(() => obj.foo, async (newVal, oldVal, onInvalidate) => {
+  let expired = true
+  onInvalidate(() => {
+    expired = false
+  })
+  const res = await fetch()
+
+  if (!expired) return
+
+  finallyData = res
+  console.log(finallyData)
+})
+```
+如上面的代码所示，在发送请求之前，我们定义了 expired 标志 变量，用来标识当前副作用函数的执行是否过期；接着调用 onInvalidate 函数注册了一个过期回调，当该副作用函数的执行过 期时将 expired 标志变量设置为 true；最后只有当没有过期时才采用请求结果，这样就可以有效地避免上述问题了。
+
+onInvalidate 的原理 是什么呢？其实很简单，在 watch 内部每次检测到变更后，在副作用 函数重新执行之前，会先调用我们通过 onInvalidate 函数注册的过 期回调，仅此而已
+
+
+```diff
+function watch(source, cb, options = {}) {
+  let getter
+  if (typeof source === 'function') {
+    getter = source
+  } else {
+    getter = () => traverse(source)
+  }
+
+  let oldValue, newValue
+
++  let cleanup
++  function onInvalidate(fn) {
++    cleanup = fn
++  }
+
+  const job = () => {
+    newValue = effectFn()
++    if (cleanup) {
++      cleanup()
++    }
+-    cb(oldValue, newValue)
++    cb(oldValue, newValue, onInvalidate)
+    oldValue = newValue
+  }
+
+  const effectFn = effect(
+    // 执行 getter
+    () => getter(),
+    {
+      lazy: true,
+      scheduler: () => {
+        if (options.flush === 'post') {
+          const p = Promise.resolve()
+          p.then(job)
+        } else {
+          job()
+        }
+      }
+    }
+  )
+  
+  if (options.immediate) {
+    job()
+  } else {
+    oldValue = effectFn()
+  }
+}
+```
+
+
+## 本章完整代码
+```js
+// 存储副作用函数的桶
+const bucket = new WeakMap()
+
+// 原始数据
+const data = { foo: 1, bar: 2 }
+// 对原始数据的代理
+const obj = new Proxy(data, {
+  // 拦截读取操作
+  get(target, key) {
+    // 将副作用函数 activeEffect 添加到存储副作用函数的桶中
+    track(target, key)
+    // 返回属性值
+    return target[key]
+  },
+  // 拦截设置操作
+  set(target, key, newVal) {
+    // 设置属性值
+    target[key] = newVal
+    // 把副作用函数从桶里取出并执行
+    trigger(target, key)
+  }
+})
+
+function track(target, key) {
+  if (!activeEffect) return
+  let depsMap = bucket.get(target)
+  if (!depsMap) {
+    bucket.set(target, (depsMap = new Map()))
+  }
+  let deps = depsMap.get(key)
+  if (!deps) {
+    depsMap.set(key, (deps = new Set()))
+  }
+  deps.add(activeEffect)
+  activeEffect.deps.push(deps)
+}
+
+function trigger(target, key) {
+  const depsMap = bucket.get(target)
+  if (!depsMap) return
+  const effects = depsMap.get(key)
+
+  const effectsToRun = new Set()
+  effects && effects.forEach(effectFn => {
+    if (effectFn !== activeEffect) {
+      effectsToRun.add(effectFn)
+    }
+  })
+  effectsToRun.forEach(effectFn => {
+    if (effectFn.options.scheduler) {
+      effectFn.options.scheduler(effectFn)
+    } else {
+      effectFn()
+    }
+  })
+  // effects && effects.forEach(effectFn => effectFn())
+}
+
+// 用一个全局变量存储当前激活的 effect 函数
+let activeEffect
+// effect 栈
+const effectStack = []
+
+function effect(fn, options = {}) {
+  const effectFn = () => {
+    cleanup(effectFn)
+    // 当调用 effect 注册副作用函数时，将副作用函数复制给 activeEffect
+    activeEffect = effectFn
+    // 在调用副作用函数之前将当前副作用函数压栈
+    effectStack.push(effectFn)
+    const res = fn()
+    // 在当前副作用函数执行完毕后，将当前副作用函数弹出栈，并还原 activeEffect 为之前的值
+    effectStack.pop()
+    activeEffect = effectStack[effectStack.length - 1]
+
+    return res
+  }
+  // 将 options 挂在到 effectFn 上
+  effectFn.options = options
+  // activeEffect.deps 用来存储所有与该副作用函数相关的依赖集合
+  effectFn.deps = []
+  // 执行副作用函数
+  if (!options.lazy) {
+    effectFn()
+  }
+
+  return effectFn
+}
+
+function cleanup(effectFn) {
+  for (let i = 0; i < effectFn.deps.length; i++) {
+    const deps = effectFn.deps[i]
+    deps.delete(effectFn)
+  }
+  effectFn.deps.length = 0
+}
+
+// =========================
+
+function computed(getter) {
+  let value
+  let dirty = true
+
+  const effectFn = effect(getter, {
+    lazy: true,
+    scheduler() {
+      if (!dirty) {
+        dirty = true
+        trigger(obj, 'value')
+      }
+    }
+  })
+  
+  const obj = {
+    get value() {
+      if (dirty) {
+        value = effectFn()
+        dirty = false
+      }
+      track(obj, 'value')
+      return value
+    }
+  }
+
+  return obj
+}
+
+
+// =========================
+
+function traverse(value, seen = new Set()) {
+  if (typeof value !== 'object' || value === null || seen.has(value)) return
+  seen.add(value)
+  for (const k in value) {
+    traverse(value[k], seen)
+  }
+
+  return value
+}
+
+function watch(source, cb, options = {}) {
+  let getter
+  if (typeof source === 'function') {
+    getter = source
+  } else {
+    getter = () => traverse(source)
+  }
+
+  let oldValue, newValue
+
+  let cleanup
+  function onInvalidate(fn) {
+    cleanup = fn
+  }
+
+  const job = () => {
+    newValue = effectFn()
+    if (cleanup) {
+      cleanup()
+    }
+    cb(oldValue, newValue, onInvalidate)
+    oldValue = newValue
+  }
+
+  const effectFn = effect(
+    // 执行 getter
+    () => getter(),
+    {
+      lazy: true,
+      scheduler: () => {
+        if (options.flush === 'post') {
+          const p = Promise.resolve()
+          p.then(job)
+        } else {
+          job()
+        }
+      }
+    }
+  )
+  
+  if (options.immediate) {
+    job()
+  } else {
+    oldValue = effectFn()
+  }
+}
+```

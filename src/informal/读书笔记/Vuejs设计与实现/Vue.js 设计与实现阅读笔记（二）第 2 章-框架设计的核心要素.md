@@ -1,8 +1,7 @@
 ---
-order: 1
+index: 2
 ---
-# 第 2 章-框架设计的核心要素
-
+# Vue.js 设计与实现阅读笔记（二）第 2 章-框架设计的核心要素
 ## 2.1 提升用户的开发体验
 
 ### Vue 对 warn 的处理
@@ -68,11 +67,11 @@ export function warn(msg: string, ...args: any[]) {
 ### 更加直观的查看 log
 
 正常打印一个 ref 是长这样
-![image](https://tvax1.sinaimg.cn/large/006vSZ9Ugy1gzhzhifed3j30x804kq47.jpg)
+![image](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/5c860982b6694cb3afe3da4b82dd93a6~tplv-k3u1fbpfcp-zoom-1.image)
 
 但是我们可以通过一些设置，来直观的查看 log 数据
-![image](https://tva3.sinaimg.cn/large/006vSZ9Ugy1gzhzfr2ti7j30oc0kkq68.jpg)
-![image](https://tvax4.sinaimg.cn/large/006vSZ9Ugy1gzhzj4jdhyj30hk0223yo.jpg)
+![image](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0bc358c6f8ac411091ae6c4dd9197223~tplv-k3u1fbpfcp-zoom-1.image)
+![image](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/14b7fdcc9c9b4436a09e5958e34a4731~tplv-k3u1fbpfcp-zoom-1.image)
 
 ## 2.2 控制框架代码的体积
 
@@ -131,12 +130,12 @@ function foo(obj) {
 加上上面的注释后，该代码就会被 tree-shaking， 并且一般来讲`/*#__PURE__*/`都是用在顶层调用的。
 
 我们可以看到在 Vue 源码中也有很多这样的代码
-![image](https://tva1.sinaimg.cn/large/006vSZ9Ugy1gzi032242xj30ic02y3zz.jpg)
+![image](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a3fe2e367aa342e78308919154426a78~tplv-k3u1fbpfcp-zoom-1.image)
 
 ## 2.4 框架应该输出怎样的构建产物
 
 细心的朋友会发现，vue 源码打包出来后的静态文件，类型非常多，那么它们又分别对应什么环境呢？
-![image](https://tvax3.sinaimg.cn/large/006vSZ9Ugy1gzi05x28dsj30dy07ddgk.jpg)
+![image](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/fd1b94adb373465091d570435dc2b45a~tplv-k3u1fbpfcp-zoom-1.image)
 
 | 产物                            | 描述                                                                       |
 | ------------------------------- | -------------------------------------------------------------------------- |

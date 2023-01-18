@@ -1,7 +1,7 @@
 ---
-order: 0
+index: 1
 ---
-# 第1章-权衡的艺术
+# Vue.js 设计与实现阅读笔记（一）第 1 章-权衡的艺术
 
 ## 1.1 命令式和声明式
 
@@ -54,7 +54,7 @@ VS
 
 innerHTML 和虚拟 DOM 在创建页面时的性能
 
-![20220907193611](https://raw.githubusercontent.com/fyhhub/imgs/main/imgs20220907193611.png)
+![20220907193611](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/79e771b64d4d46e3b8eca4c445b06e8c~tplv-k3u1fbpfcp-zoom-1.image)
 
 
 ## 1.4 运行时和编译时

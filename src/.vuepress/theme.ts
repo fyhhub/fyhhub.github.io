@@ -158,9 +158,9 @@ export default hopeTheme({
     comment: {
       provider: "Giscus",
       repo: "fyhhub/fyhhub.github.io",
-      repoId: "R_kgDOGcGXUw",
+      repoId: "R_kgDOIvpPoA",
       category: "General",
-      categoryId: "DIC_kwDOGcGXU84CQ1aV",
+      categoryId: "DIC_kwDOIvpPoM4CTp-K",
       inputPosition: "bottom",
     },
     mdEnhance: {
