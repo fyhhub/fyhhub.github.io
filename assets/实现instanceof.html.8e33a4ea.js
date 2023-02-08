@@ -1,0 +1,12 @@
+import{_ as n}from"./plugin-vueexport-helper.2444895f.js";import{o as s,c as a,d as t}from"./app.c26c72b8.js";const e={},o=t(`<h1 id="\u5B9E\u73B0instanceof" tabindex="-1"><a class="header-anchor" href="#\u5B9E\u73B0instanceof" aria-hidden="true">#</a> \u5B9E\u73B0instanceof</h1><div class="language-javascript ext-js line-numbers-mode"><pre class="language-javascript"><code><span class="token keyword">function</span> <span class="token function">instanceOf</span><span class="token punctuation">(</span><span class="token parameter">source<span class="token punctuation">,</span> target</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> proto <span class="token operator">=</span> source<span class="token punctuation">.</span>__proto__<span class="token punctuation">;</span>
+  <span class="token keyword">while</span> <span class="token punctuation">(</span>proto<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>proto <span class="token operator">===</span> target<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      proto <span class="token operator">=</span> proto<span class="token punctuation">.</span>__proto__<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div>`,2),p=[o];function c(i,l){return s(),a("div",null,p)}const d=n(e,[["render",c],["__file","\u5B9E\u73B0instanceof.html.vue"]]);export{d as default};
