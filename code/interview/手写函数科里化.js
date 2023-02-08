@@ -8,3 +8,16 @@ function curry(fn, args) {
       : fn.apply(this, allArgs);
   };
 }
+
+function curry(fn, args) {
+  args = args || [];
+  const length = arguments.length
+  return function() {
+    const _args = args.concat([].slice.call(arguments))
+    if (_args < length) {
+      return curry.call(this, fn, _args)
+    } else {
+      return fn.apply(this, _args)
+    }
+  }
+}
