@@ -1,4 +1,4 @@
 ---
 index: false
 ---
-# C/C++
+# Rust
