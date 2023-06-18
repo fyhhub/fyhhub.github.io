@@ -1,6 +1,7 @@
 # Rust-结构体
 
-## 普通的结构体
+## 1. 结构体的写法
+### 普通的结构体
 ```rust
 struct User {
   name: String,
@@ -8,12 +9,12 @@ struct User {
 }
 ```
 
-## 单元结构体
+### 单元结构体
 ```rust
 struct User;
 ```
 
-## 元组结构体
+### 元组结构体
 ```rust
 // 一个值的元组
 struct User(String);
@@ -22,7 +23,81 @@ struct User(String);
 struct User(String, u32);
 ```
 
-## 匿名结构体
+### 匿名结构体
 ```rust
 {x:1,y:1}
 ```
+
+## 2.结构体的初始化
+```rust
+let user = User {
+    email: "someone@example.com",
+    username: "someusername123",
+    active: true,
+    sign_in_count: 1,
+};
+```
+
+## 3. 结构体更新值
+第一种, 直接修改单个值
+```rust
+let mut user = User {
+    active: true,
+    username: String::from("value"),
+    email: String::from("value"),
+    sign_in_count: 12,
+};
+user.active = false
+```
+
+第二种，修改多个
+```rust
+let user2 = User {
+    email: String::from("email"),
+    username: String::from("username"),
+    ..user
+};
+```
+
+## 2. 如何打印结构体
+```rust
+#[derive(Debug)] // 关键是这行
+struct Rectangle {
+    width: u32,
+    height: u32,
+}
+
+fn main() {
+    let rect1 = Rectangle {
+        width: 30,
+        height: 50,
+    };
+
+    println!("rect1 is {:?}", rect1);
+}
+```
+
+## 3.结构体的属性怎么用引用类型
+
+正常来讲结构体拥有它所有的数据，而不是从其它地方借用数据。
+
+**你也可以让 User 结构体从其它对象借用数据，不过这么做，就需要引入生命周期(lifetimes)这个新概念**
+
+```rust
+struct User {
+    username: &str,
+    email: &String,
+    sign_in_count: u64,
+    active: bool,
+}
+
+fn main() {
+    let user1 = User {
+        email: "someone@example.com",
+        username: "someusername123",
+        active: true,
+        sign_in_count: 1,
+    };
+}
+```
+比如上面的`&str`和`&String`是一个引用，这里会报错

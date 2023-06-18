@@ -114,7 +114,7 @@ const nav = navbar([
   { text: "计算机基础", link: "/basic/", icon: 'code' },
   { text: "随笔", link: "/informal/", icon: 'write' },
   { text: "面经", link: "/interview/", icon: 'strong' },
-  { text: "C/C++", link: "/c/", icon: 'copyright' },
+  { text: "Rust", link: "/rust/", icon: 'copyright' },
   { text: "留言板", link: "/comment/", icon: 'comment' },
 ]);
 export default hopeTheme({
