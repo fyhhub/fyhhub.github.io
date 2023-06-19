@@ -1,0 +1,59 @@
+import{_ as s}from"./plugin-vueexport-helper.2444895f.js";import{o as n,c as a,e}from"./app.25645dcd.js";const t={},p=e(`<h1 id="tsconfig-\u4E0D\u5E38\u89C1\u7684\u914D\u7F6E" tabindex="-1"><a class="header-anchor" href="#tsconfig-\u4E0D\u5E38\u89C1\u7684\u914D\u7F6E" aria-hidden="true">#</a> tsconfig \u4E0D\u5E38\u89C1\u7684\u914D\u7F6E</h1><h2 id="compileroptions" tabindex="-1"><a class="header-anchor" href="#compileroptions" aria-hidden="true">#</a> compilerOptions</h2><ul><li><p><strong>forceConsistentCasingInFileNames\uFF1A</strong> import \u6587\u4EF6\u540D\uFF0C\u662F\u5426\u533A\u5206\u5927\u5C0F\u5199\uFF0C\u8BBE\u7F6E\u4E3A true \u540E\uFF0C\u5F3A\u5236\u533A\u5206\u5927\u5C0F\u5199</p><div class="language-javascript ext-js line-numbers-mode"><pre class="language-javascript"><code><span class="token comment">// \u5305\u542B\u4E00\u4E2AApp.tsx\u6587\u4EF6</span>
+
+<span class="token keyword">import</span> <span class="token string">&quot;./app.tsx&quot;</span><span class="token punctuation">;</span> <span class="token comment">// \u9519\u8BEF</span>
+
+<span class="token keyword">import</span> <span class="token string">&quot;./App.tsx&quot;</span><span class="token punctuation">;</span> <span class="token comment">// \u6B63\u786E</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li><li><p><strong>allowSyntheticDefaultImports\uFF1A</strong> \u662F\u5426\u652F\u6301\u5408\u6210\u9ED8\u8BA4\u5BFC\u51FA</p><div class="language-javascript ext-js line-numbers-mode"><pre class="language-javascript"><code><span class="token comment">// allowSyntheticDefaultImports: true</span>
+<span class="token keyword">import</span> React <span class="token keyword">from</span> <span class="token string">&quot;react&quot;</span><span class="token punctuation">;</span> <span class="token comment">// \u6B63\u786E</span>
+<span class="token keyword">import</span> <span class="token operator">*</span> <span class="token keyword">as</span> React <span class="token keyword">from</span> <span class="token string">&quot;react&quot;</span><span class="token punctuation">;</span> <span class="token comment">// \u6B63\u786E, \u4F46\u662F\u4E0D\u80FD\u76F4\u63A5\u4F7F\u7528\u9ED8\u8BA4\u5BFC\u51FA  \u9700\u8981React.default</span>
+
+<span class="token comment">// allowSyntheticDefaultImports: false</span>
+<span class="token keyword">import</span> React <span class="token keyword">from</span> <span class="token string">&quot;react&quot;</span><span class="token punctuation">;</span> <span class="token comment">// \u9519\u8BEF</span>
+<span class="token keyword">import</span> <span class="token operator">*</span> <span class="token keyword">as</span> React <span class="token keyword">from</span> <span class="token string">&quot;react&quot;</span><span class="token punctuation">;</span> <span class="token comment">// \u6B63\u786E</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><p><strong>\u6CE8\u610F\uFF1A</strong> \u5982\u679C\u4F60\u914D\u7F6E<code>esModuleInterop: true</code>, <code>allowSyntheticDefaultImports</code>\u5C06\u9ED8\u8BA4\u5F00\u542F</p></li><li><p><strong>isolatedModules\uFF1A</strong> \u6587\u4EF6\u662F\u5426\u5FC5\u987B\u6709\u5BFC\u51FA</p><div class="language-javascript ext-js line-numbers-mode"><pre class="language-javascript"><code><span class="token comment">// isolatedModules: true</span>
+
+<span class="token comment">// index.ts</span>
+<span class="token keyword">import</span> <span class="token string">&quot;a.tsx&quot;</span><span class="token punctuation">;</span> <span class="token comment">// \u63D0\u793A\u62A5\u9519\uFF0C\u6CA1\u6709\u5BFC\u51FA\uFF01</span>
+
+<span class="token comment">// a.tsx</span>
+<span class="token comment">// \u5565\u4E5F\u6CA1\u6709 \u6216\u8005 \u6CA1\u5199export\uFF0C\u6587\u4EF6\u62A5\u9519\uFF01</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><div class="language-javascript ext-js line-numbers-mode"><pre class="language-javascript"><code><span class="token comment">// isolatedModules: false</span>
+
+<span class="token comment">// index.ts</span>
+<span class="token keyword">import</span> <span class="token string">&quot;a.tsx&quot;</span><span class="token punctuation">;</span> <span class="token comment">// \u4E0D\u62A5\u9519\uFF01</span>
+
+<span class="token comment">// a.tsx</span>
+<span class="token comment">// \u5565\u4E5F\u6CA1\u6709 \u6216\u8005 \u6CA1\u5199export\uFF0C\u6587\u4EF6\u4E0D\u62A5\u9519\uFF01</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li><li><p><strong>useDefineForClassFields</strong></p><div class="language-javascript ext-js line-numbers-mode"><pre class="language-javascript"><code><span class="token comment">// useDefineForClassFields: true</span>
+<span class="token keyword">class</span> <span class="token class-name">C</span> <span class="token punctuation">{</span>
+  foo <span class="token operator">=</span> <span class="token number">100</span><span class="token punctuation">;</span>
+  <span class="token literal-property property">bar</span><span class="token operator">:</span> string<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token comment">// \u7F16\u8BD1\u4E3A\uFF1A</span>
+<span class="token keyword">class</span> <span class="token class-name">C</span> <span class="token punctuation">{</span>
+  <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    Object<span class="token punctuation">.</span><span class="token function">defineProperty</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> <span class="token string">&quot;foo&quot;</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+      <span class="token literal-property property">enumerable</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">configurable</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">writable</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">value</span><span class="token operator">:</span> <span class="token number">100</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Object<span class="token punctuation">.</span><span class="token function">defineProperty</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> <span class="token string">&quot;bar&quot;</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+      <span class="token literal-property property">enumerable</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">configurable</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">writable</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">value</span><span class="token operator">:</span> <span class="token keyword">void</span> <span class="token number">0</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div><div class="language-javascript ext-js line-numbers-mode"><pre class="language-javascript"><code><span class="token comment">// useDefineForClassFields: false</span>
+<span class="token keyword">class</span> <span class="token class-name">C</span> <span class="token punctuation">{</span>
+  foo <span class="token operator">=</span> <span class="token number">100</span><span class="token punctuation">;</span>
+  <span class="token literal-property property">bar</span><span class="token operator">:</span> string<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">class</span> <span class="token class-name">C</span> <span class="token punctuation">{</span>
+  <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>foo <span class="token operator">=</span> <span class="token number">100</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre><div class="line-numbers" aria-hidden="true"><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div><div class="line-number"></div></div></div></li><li><p><strong>noErrorTruncation</strong></p><p>ts \u7C7B\u578B\u5F02\u5E38\u5982\u679C\u592A\u591A\u592A\u957F\uFF0C\u53EF\u80FD\u4F1A\u88AB\u9690\u85CF\uFF0C\u914D\u7F6E\u6B64\u9009\u9879\u540E\u80FD\u5168\u90E8\u5C55\u793A\u3002</p></li><li><p><strong>composite</strong></p><p>\u5982\u679C\u914D\u7F6E\u4E86 true, \u9ED8\u8BA4<code>rootDir</code>\u4E3A<code>tsconfig.json</code>\u90A3\u4E00\u5C42\u76EE\u5F55, \u5E76\u4E14\u9ED8\u8BA4\u5F00\u542F<code>declaretion</code></p></li></ul>`,3),o=[p];function l(c,i){return n(),a("div",null,o)}const d=s(t,[["render",l],["__file","tsconfig\u914D\u7F6E.html.vue"]]);export{d as default};
