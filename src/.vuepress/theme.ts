@@ -147,7 +147,7 @@ export default hopeTheme({
     '/comment/': 'structure',
     '/informal/': 'structure',
     '/interview/': 'structure',
-    '/c/': 'structure',
+    '/rust-learn/': 'structure',
   },
   editLink: false,
   navbar: nav,
