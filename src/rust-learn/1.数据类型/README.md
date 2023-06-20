@@ -2,4 +2,4 @@
 index: false
 order: 1
 ---
-# 语言基础
+# 1. 数据类型
