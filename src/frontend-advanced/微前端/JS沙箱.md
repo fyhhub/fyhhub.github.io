@@ -3,7 +3,7 @@
 在`qiankun`的实现中，包含了两种沙箱，分别为`基于Proxy实现的沙箱`和`快照沙箱`，当浏览器不支持`Proxy`会降级为`快照沙箱`
 
 ```mermaid
-flowchart TB;
+flowchart TB
   a(JS沙箱) --> b(基于Proxy的沙箱)
   a --> c(SnapshotSandbox)
   subgraph .
@@ -489,7 +489,7 @@ export default class SnapshotSandbox implements SandBox {
 相比基于`Proxy`实现的沙箱，`SnapshotSandbox`实现非常简洁，只有`active`和`inactive`状态变化，可以用一个流程图来表示
 
 ```mermaid
-flowchart LR;
+flowchart LR
 subgraph inactive
 d(失活) --> e(modifyPropsMap记录变更)
 e --> f(windowSnapshot从快照恢复)

@@ -5,7 +5,7 @@
 **作用：解析模块的真实路径，例如相对路径解析为绝对路径。**
 
 ```mermaid
-flowchart TB;
+flowchart TB
   a(Module._resolveFilename) --> b{是否为内置模块}
   b --> |否|d(Module._resolveLookupPaths, 将paths和环境变量node_modules合并)
   b --> |是|c(End)
@@ -42,7 +42,7 @@ Module._nodeModulePaths(fromDir);
 ## \_findPath
 
 ```mermaid
-flowchart TB;
+flowchart TB
   a(Module._findPath) --> b{查询缓存}
   b --> |是|c(直接返回结果)
   c --> d(End)

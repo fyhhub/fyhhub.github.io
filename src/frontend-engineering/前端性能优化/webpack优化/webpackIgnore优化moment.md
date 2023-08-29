@@ -33,7 +33,7 @@ new webpack.IgnorePlugin({
 首先我们需要了解一下`webpack`在此处对文件解析的过程
 
 ```mermaid
-flowchart TB;
+flowchart TB
 a(解析路径前触发beforeResolve钩子) --> |返回null|b(不再解析和编译该文件)
 a --> |返回result|c(继续后续的解析和编译)
 b --> d(结束)
