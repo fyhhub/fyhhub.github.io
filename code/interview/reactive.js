@@ -1,13 +1,3 @@
-/*
- * @Author: fanyihui
- * @Date: 2022-02-21 11:12:41
- * @LastEditors: VSCode
- * @LastEditTime: 2022-02-21 21:25:16
- * @FilePath: /fyh-blog/code/interview/reactive.js
- * @Description:
- *
- * Copyright (c) 2022 by fanyihui/tuhu, All Rights Reserved.
- */
 
 const ITERATE_KEY = "ITERATE_KEY";
 
