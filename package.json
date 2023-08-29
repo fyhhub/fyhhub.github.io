@@ -9,22 +9,18 @@
     "dev": "vitepress dev src"
   },
   "dependencies": {
-    "@vitepress-demo-preview/component": "^2.3.2",
-    "@vitepress-demo-preview/plugin": "^1.2.2",
     "flexsearch": "^0.7.31",
-    "vitepress-plugin-codeblocks-fold": "^1.2.27",
     "vitepress-plugin-comment-with-giscus": "^1.1.7",
     "vitepress-plugin-search": "^1.0.4-alpha.20",
     "vue": "^3.2.29"
   },
   "devDependencies": {
-    "@stuyk/vitepress-sidebar-builder": "^1.0.2",
     "@vuepress/plugin-search": "^2.0.0-beta.51",
     "mermaid": "^10.4.0",
     "sass": "^1.66.1",
     "vitepress": "^1.0.0-rc.10",
     "vitepress-plugin-auto-sidebar": "^1.1.0",
     "vitepress-plugin-mermaid": "^2.0.14",
-    "vitepress-plugin-sandpack": "^1.0.3"
+    "vitepress-theme-demoblock": "^3.0.3"
   }
 }

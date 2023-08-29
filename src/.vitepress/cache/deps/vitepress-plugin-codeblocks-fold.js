@@ -2,8 +2,7 @@ import {
   nextTick,
   onMounted,
   watch
-} from "./chunk-V634PGSD.js";
-import "./chunk-76J2PTFD.js";
+} from "./chunk-WCDSLHER.js";
 
 // node_modules/vitepress-plugin-codeblocks-fold/lib/index.js
 var themeChangeObserve = null;

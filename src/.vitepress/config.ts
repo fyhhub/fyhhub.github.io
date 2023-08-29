@@ -3,30 +3,27 @@ import path from 'path';
 import sidebar from './sidebar';
 import { nav } from './theme';
 import { SearchPlugin } from 'vitepress-plugin-search';
-import { withMermaid } from "vitepress-plugin-mermaid";
-import { containerPreview, componentPreview } from '@vitepress-demo-preview/plugin'
+import { demoblockPlugin, demoblockVitePlugin } from 'vitepress-theme-demoblock'
 
-const INVALID_CHAR_REGEX = /[\x00-\x1F\x7F<>*#"{}|^[\]`;?:&=+$,]/g;
-const DRIVE_LETTER_REGEX = /^[a-z]:/i;
-export default withMermaid(defineConfig({
+
+export default defineConfig({
   title: "fyhub's blog",
   base: '/',
   outDir: path.resolve(__dirname, '../../docs'),
-  mermaid: {},
-  markdown: {
-    config(md) {
-      md.use(containerPreview)
-      md.use(componentPreview)
-    }
-  },
   vite: {
     server: {
       port: 5175,
       host: '127.0.0.1'
     },
     plugins: [
-      SearchPlugin() as any
+      SearchPlugin() as any,
+      demoblockVitePlugin()
     ]
+  },
+  markdown: {
+    config: (md) => {
+      md.use(demoblockPlugin)
+    }
   },
   ignoreDeadLinks: true,
   themeConfig: {
@@ -95,4 +92,4 @@ export default withMermaid(defineConfig({
   `
     ]
   ]
-}));
+});

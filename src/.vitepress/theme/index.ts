@@ -2,21 +2,19 @@
 import DefaultTheme from 'vitepress/theme';
 import giscusTalk from 'vitepress-plugin-comment-with-giscus';
 import { useData, useRoute } from 'vitepress';
-import codeblocksFold from 'vitepress-plugin-codeblocks-fold'; // 导入方法
 import 'vitepress-plugin-codeblocks-fold/style/index.scss'; // 导入样式
-import { AntDesignContainer, ElementPlusContainer, NaiveUIContainer } from '@vitepress-demo-preview/component'
-import '@vitepress-demo-preview/component/dist/style.css'
+import 'vitepress-theme-demoblock/dist/theme/styles/index.css'
+import { useComponents } from './useComponents'
 export default {
     ...DefaultTheme,
     enhanceApp(ctx) {
         DefaultTheme.enhanceApp(ctx);
-        ctx.app.component('demo-preview', ElementPlusContainer)
+        useComponents(ctx.app)
     },
     setup() {
         // 获取前言和路由
         const { frontmatter } = useData();
         const route = useRoute();
-        // 评论组件 - https://giscus.app/
         giscusTalk({
             repo: 'fyhhub/fyhhub.github.io',
             repoId: 'R_kgDOGcGXUw',
@@ -27,7 +25,6 @@ export default {
             lang: 'zh-CN', // 默认: `zh-CN`
         }, {
             frontmatter, route
-        });
-        codeblocksFold({ route, frontmatter }, true, 400);
+        } as any);
     }
 };

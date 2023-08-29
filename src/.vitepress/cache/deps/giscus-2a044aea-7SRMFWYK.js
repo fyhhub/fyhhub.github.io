@@ -1,5 +1,3 @@
-import "./chunk-76J2PTFD.js";
-
 // node_modules/@giscus/vue/dist/giscus-2a044aea.mjs
 var x = window;
 var Q = x.ShadowRoot && (x.ShadyCSS === void 0 || x.ShadyCSS.nativeShadow) && "adoptedStyleSheets" in Document.prototype && "replace" in CSSStyleSheet.prototype;
@@ -986,4 +984,4 @@ export {
    * SPDX-License-Identifier: BSD-3-Clause
    *)
 */
-//# sourceMappingURL=giscus-2a044aea-BYEMK57N.js.map
+//# sourceMappingURL=giscus-2a044aea-7SRMFWYK.js.map
