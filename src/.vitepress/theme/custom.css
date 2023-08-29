@@ -2,3 +2,7 @@
   content: "";
   background: transparent;
 }
+
+.container {
+  overflow: initial;
+}
