@@ -1,29 +1,23 @@
 {
-  "hash": "b9b48f55",
-  "browserHash": "4b0f6799",
+  "hash": "29611686",
+  "browserHash": "a03a4f02",
   "optimized": {
     "vue": {
       "src": "../../../../node_modules/vue/dist/vue.runtime.esm-bundler.js",
       "file": "vue.js",
-      "fileHash": "e4efabd3",
+      "fileHash": "ca35a864",
       "needsInterop": false
     },
     "vitepress > @vue/devtools-api": {
       "src": "../../../../node_modules/vitepress/node_modules/@vue/devtools-api/lib/esm/index.js",
       "file": "vitepress___@vue_devtools-api.js",
-      "fileHash": "5f6859f0",
+      "fileHash": "2ec198f3",
       "needsInterop": false
     },
     "vitepress-plugin-comment-with-giscus": {
       "src": "../../../../node_modules/vitepress-plugin-comment-with-giscus/lib/giscus.js",
       "file": "vitepress-plugin-comment-with-giscus.js",
-      "fileHash": "d427b92f",
-      "needsInterop": false
-    },
-    "vitepress-plugin-codeblocks-fold": {
-      "src": "../../../../node_modules/vitepress-plugin-codeblocks-fold/lib/index.js",
-      "file": "vitepress-plugin-codeblocks-fold.js",
-      "fileHash": "964e1005",
+      "fileHash": "b2f2f44a",
       "needsInterop": false
     }
   },

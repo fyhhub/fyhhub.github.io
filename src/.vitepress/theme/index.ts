@@ -2,7 +2,6 @@
 import DefaultTheme from 'vitepress/theme';
 import giscusTalk from 'vitepress-plugin-comment-with-giscus';
 import { useData, useRoute } from 'vitepress';
-import 'vitepress-plugin-codeblocks-fold/style/index.scss'; // 导入样式
 import 'vitepress-theme-demoblock/dist/theme/styles/index.css'
 import { useComponents } from './useComponents'
 export default {
