@@ -95,6 +95,13 @@ export default defineConfig({
   // }),
   head: [
     [
+      'meta',
+      {
+        name: 'referrer',
+        content: 'never'
+      },
+    ],
+    [
       'script',
       {},
       `
