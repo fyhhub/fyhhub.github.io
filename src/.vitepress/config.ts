@@ -12,7 +12,8 @@ export default defineConfig({
   lastUpdated: true,
   vite: {
     server: {
-      host: '127.0.0.1'
+      host: '127.0.0.1',
+      port: 5175
     },
     plugins: [
       // SearchPlugin() as any,
