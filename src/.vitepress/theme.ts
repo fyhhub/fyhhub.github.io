@@ -65,6 +65,10 @@ export const nav = [
             link: '/frontend-engineering/前端性能优化/'
           },
           {
+            text: '工程化工具',
+            link: '/frontend-engineering/工程化工具/'
+          },
+          {
             text: 'Babel',
             link: '/frontend-engineering/Babel/'
           },
