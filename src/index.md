@@ -2,12 +2,12 @@
 layout: home
 
 title: fyhub's blog
-titleTemplate: 前端成长记录、知识体系。Give a ⭐️ if this project helped you!
+titleTemplate: 前端成长记录、知识体系
 
 hero:
   title: fyhub's blog
   text: fyhub's blog
-  tagline: 前端成长记录、知识体系。Give a ⭐️ if this project helped you!
+  tagline: 前端成长记录、知识体系
   actions:
     - theme: brand
       text: 开始学习

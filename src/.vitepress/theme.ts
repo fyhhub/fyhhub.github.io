@@ -32,12 +32,12 @@ export const nav = [
             link: '/frontend-advanced/微前端/'
           },
           {
-            text: 'JavaScript',
-            link: '/frontend-advanced/Javascript/'
+            text: 'Typescript',
+            link: '/frontend-advanced/typescript/'
           },
           {
             text: 'Node',
-            link: '/frontend-advanced/Node/'
+            link: '/frontend-advanced/node/'
           },
           {
             text: 'React',

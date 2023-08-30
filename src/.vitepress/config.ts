@@ -10,13 +10,14 @@ export default defineConfig({
   title: "fyhub's blog",
   base: '/',
   outDir: path.resolve(__dirname, '../../docs'),
+  lastUpdated: true,
   vite: {
     server: {
       port: 5175,
       host: '127.0.0.1'
     },
     plugins: [
-      SearchPlugin() as any,
+      // SearchPlugin() as any,
       demoblockVitePlugin()
     ]
   },
@@ -28,7 +29,30 @@ export default defineConfig({
   ignoreDeadLinks: true,
   themeConfig: {
     sidebar,
-    nav
+    nav,
+    search: {
+      provider: 'local',
+      options: {
+        locales: {
+          zh: {
+            translations: {
+              button: {
+                buttonText: '搜索文档',
+                buttonAriaLabel: '搜索文档'
+              },
+              modal: {
+                noResultsText: '无法找到相关结果',
+                resetButtonTitle: '清除查询条件',
+                footer: {
+                  selectText: '选择',
+                  navigateText: '切换'
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   },
   // {
   //   provider: "Giscus",

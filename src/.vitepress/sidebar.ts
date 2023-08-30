@@ -1,9 +1,6 @@
 import path from 'path';
 import fs from 'fs';
 
-const nav = [{ text: '指南', link: '/guide' }];
-
-let sideBarConfigArr: any[] = [];
 function generateSideBar(pathline, isRoot, paths: string[] = []) {
   // 获取路径下的所有文件和文件夹名称
   let mdDirs = fs.readdirSync(pathline);
@@ -13,7 +10,8 @@ function generateSideBar(pathline, isRoot, paths: string[] = []) {
   let children: Array<{
     text: string;
     link: string;
-    items?: any[]
+    items?: any[];
+    collapsed?: boolean;
   }> = [];
 
   mdDirs.sort((a, b) => {
@@ -33,7 +31,8 @@ function generateSideBar(pathline, isRoot, paths: string[] = []) {
         children.push({
           text: dir,
           link: `/${paths.concat(dir).join('/')}/`,
-          items: generateSideBar(fullpath, false, paths.concat(dir))
+          items: generateSideBar(fullpath, false, paths.concat(dir)),
+          collapsed: false
         })
       }
     } else if (stats.isFile()) {
