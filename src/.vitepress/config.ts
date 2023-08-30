@@ -2,7 +2,6 @@ import { defineConfig } from 'vitepress';
 import path from 'path';
 import sidebar from './sidebar';
 import { nav } from './theme';
-import { SearchPlugin } from 'vitepress-plugin-search';
 import { demoblockPlugin, demoblockVitePlugin } from 'vitepress-theme-demoblock'
 
 
