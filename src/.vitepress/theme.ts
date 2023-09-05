@@ -12,10 +12,11 @@ export const nav = [
       },
       {
         text: '前端工程化',
-        link: '/frontend-engineering'
+        link: '/frontend-engineering/'
       },
     ],
   },
+  { text: "后端开发", link: "/backend/" },
   { text: "开发工具", link: "/tools/" },
   { text: "算法", link: "/algorithm/" },
   { text: "计算机基础", link: "/basic/" },
