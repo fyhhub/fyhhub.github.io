@@ -18,15 +18,19 @@
  * @return {ListNode}
  */
 var removeElements = function (head, val) {
-  let ret = new ListNode(-1, head);
-  let cur = ret;
-  while (cur.next) {
-    if (cur.next.val === val) {
-      cur.next = cur.next.next;
-      continue;
+  let h = new ListNode(-1, head)
+  let res = h;
+  while(h.next) {
+    if (h.next.val === val) {
+      h.next = h.next.next
+      continue
     }
-    cur = cur.next;
+    h = h.next
   }
-  return ret.next;
+  return res.next;
 };
 // @lc code=end
+
+// @after-stub-for-debug-begin
+module.exports = removeElements;
+// @after-stub-for-debug-end
