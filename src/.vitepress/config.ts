@@ -3,7 +3,7 @@ import path from 'path';
 import sidebar from './sidebar';
 import { nav } from './theme';
 import { demoblockPlugin, demoblockVitePlugin } from 'vitepress-theme-demoblock'
-
+import { VueReplMdPlugin } from '../../vitepress-plugin-vue-repl/node';
 
 export default defineConfig({
   title: "fyhub's blog",
@@ -18,11 +18,15 @@ export default defineConfig({
     plugins: [
       // SearchPlugin() as any,
       demoblockVitePlugin()
-    ]
+    ],
+    optimizeDeps: {
+      exclude: ['@vue/repl']
+    }
   },
   markdown: {
     config: (md) => {
       md.use(demoblockPlugin)
+      md.use(VueReplMdPlugin)
     }
   },
   ignoreDeadLinks: true,

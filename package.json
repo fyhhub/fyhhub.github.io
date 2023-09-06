@@ -9,11 +9,15 @@
     "dev": "vitepress dev src"
   },
   "dependencies": {
+    "@vue/repl": "^2.5.8",
+    "fflate": "^0.8.0",
     "flexsearch": "^0.7.31",
+    "markdown-it-container": "^3.0.0",
     "vitepress-plugin-comment-with-giscus": "^1.1.7",
     "vue": "^3.2.29"
   },
   "devDependencies": {
+    "@types/node": "^20.5.9",
     "mermaid": "^10.4.0",
     "sass": "^1.66.1",
     "vitepress": "^1.0.0-rc.10",
