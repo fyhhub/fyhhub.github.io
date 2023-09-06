@@ -53,47 +53,6 @@ export default defineConfig({
       }
     }
   },
-  // {
-  //   provider: "Giscus",
-  //   repo: "fyhhub/fyhhub.github.io",
-  //   repoId: "R_kgDOGcGXUw",
-  //   category: "General",
-  //   categoryId: "DIC_kwDOGcGXU84CQ1aV",
-  //   inputPosition: "bottom",
-  // }
-  // theme,
-  // shouldPrefetch: false,
-  // plugins: [
-  //   searchPlugin({
-  //     locales: {
-  //       '/': {
-  //         placeholder: 'Search',
-  //       },
-  //       '/zh/': {
-  //         placeholder: '搜索',
-  //       },
-  //     },
-  //   })
-  // ],
-  // bundler: viteBundler({
-  //   viteOptions: {
-  //     build: {
-  //       rollupOptions: {
-  //         output: {
-  //           // https://github.com/rollup/rollup/blob/master/src/utils/sanitizeFileName.ts
-  //           sanitizeFileName(fileName) {
-  //             const match = DRIVE_LETTER_REGEX.exec(fileName);
-  //             const driveLetter = match ? match[0] : "";
-  //             return (
-  //               driveLetter +
-  //               fileName.slice(driveLetter.length).replace(INVALID_CHAR_REGEX, "")
-  //             );
-  //           },
-  //         },
-  //       },
-  //     }
-  //   }
-  // }),
   head: [
     [
       'meta',
