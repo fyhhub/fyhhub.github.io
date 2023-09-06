@@ -2,13 +2,13 @@
 
 ## 手机截图并保存到电脑
 
-```
+```shell
 adb exec-out screencap -p > ~/xxx.png
 ```
 
 ## 屏幕录制保存到电脑
 
-```
+```shell
 # 保存到手机
 adb shell screenrecord /sdcard/filename.mp4
 
