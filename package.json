@@ -18,12 +18,11 @@
   },
   "devDependencies": {
     "@types/node": "^20.5.9",
-    "mermaid": "^10.4.0",
     "sass": "^1.66.1",
     "vitepress": "^1.0.0-rc.10",
     "vitepress-plugin-auto-sidebar": "^1.1.0",
     "vitepress-plugin-mermaid": "^2.0.14",
-    "vitepress-plugin-vue-repl": "0.0.4",
+    "vitepress-plugin-vue-repl": "0.0.6",
     "vitepress-theme-demoblock": "^3.0.3"
   }
 }

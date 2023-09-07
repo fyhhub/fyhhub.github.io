@@ -1,6 +1,28 @@
 # vitepress-plugin-vue-repl
 
 
+## Preview
+
+:::playground
+```vue
+<template>
+  <div>playground  test</div>
+  <button @click="count += 1">{{count}}</button>
+</template>
+<script setup>
+import { ref } from 'vue';
+const count = ref(1)
+</script>
+<style scoped>
+div {
+  color: red;
+}
+</style>
+
+```
+:::
+
+
 ## install
 
 ```shell
@@ -33,8 +55,7 @@ import DefaultTheme from 'vitepress/theme';
 export default {
     ...DefaultTheme,
     enhanceApp(ctx) {
-        // Do not modify component name
-        ctx.app.component('VuePlayground', Playground);
+      ctx.app.component('VuePlayground', Playground);
     },
 };
 ```
@@ -42,7 +63,25 @@ export default {
 
 ## Usage
 
-![16940542830411694054282196.png](https://fastly.jsdelivr.net/gh/fyhhub/imgs@main/16940542830411694054282196.png)
+```markdown
+:::playground
+```vue
+<template>
+  <div>playground  test</div>
+  <button @click="count += 1">{{count}}</button>
+</template>
+<script setup>
+import { ref } from 'vue';
+const count = ref(1)
+</script>
+<style scoped>
+div {
+  color: red;
+}
+</style>
 
+\``` # remove slash
+:::
+```
 
-![16940543340541694054333997.png](https://fastly.jsdelivr.net/gh/fyhhub/imgs@main/16940543340541694054333997.png)
+注意去掉斜线
