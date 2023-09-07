@@ -6,7 +6,7 @@ npm i -g whistle.mockall
 ```
 
 ## 使用
-```
+```shell
 * whistle.mockall://
 ```
 
