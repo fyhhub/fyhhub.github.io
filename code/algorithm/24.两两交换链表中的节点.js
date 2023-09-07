@@ -17,26 +17,30 @@
  * @return {ListNode}
  */
 var swapPairs = function (head) {
-  const node = new ListNode(-1, head);
-  const ret = node;
-  let temp = node;
-  // 保证后面有两个节点能进行交换
-  while (temp.next && temp.next.next) {
+  let h = new ListNode(-1, head)
+  let cur = h;
+
+  while(cur.next && cur.next.next) {
     // 第一个节点
-    let pre = temp.next;
+    let first = cur.next;
     // 第二个节点
-    let cur = temp.next.next;
+    let second = cur.next.next
+    // 第三个节点
+    let three = second.next
 
-    // 第一个节点 连接 第三个节点
-    pre.next = cur.next;
-    // 第二个节点连接 第一个节点
-    cur.next = pre;
-    // 开始节点 连接 第二个节点
-    temp.next = cur;
+    // 连接实际上的第一个节点
+    cur.next = second
 
-    // 指针移动
-    temp = pre;
+    // 实际的第一个节点 连接 实际第二个节点
+    second.next = first
+
+    // 第二个节点 连接 实际第三个节点
+    first.next = three
+
+    // 移动指针到第二个节点
+    cur = first
   }
-  return ret.next;
+
+  return h.next
 };
 // @lc code=end
