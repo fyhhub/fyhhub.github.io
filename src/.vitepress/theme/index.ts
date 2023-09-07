@@ -4,7 +4,7 @@ import giscusTalk from 'vitepress-plugin-comment-with-giscus';
 import { useData, useRoute } from 'vitepress';
 import 'vitepress-theme-demoblock/dist/theme/styles/index.css'
 import { useComponents } from './useComponents'
-import Playground from '../../../vitepress-plugin-vue-repl/components/Playground.vue'
+import Playground from 'vitepress-plugin-vue-repl/components/index.vue'
 import './custom.css'
 export default {
     ...DefaultTheme,

@@ -8,14 +8,13 @@ index: false
 
 ```vue
 <template>
-  <div>1222222312312312</div>
+  <div>test</div>
 </template>
 <script setup lang="ts">
 
 </script>
-<style lang="less" scoped>
+<style scoped>
 
 </style>
 ```
-
 :::

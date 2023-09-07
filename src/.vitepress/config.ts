@@ -3,7 +3,7 @@ import path from 'path';
 import sidebar from './sidebar';
 import { nav } from './theme';
 import { demoblockPlugin, demoblockVitePlugin } from 'vitepress-theme-demoblock'
-import { VueReplMdPlugin } from '../../vitepress-plugin-vue-repl/node';
+import { VueReplMdPlugin } from 'vitepress-plugin-vue-repl';
 
 export default defineConfig({
   title: "fyhub's blog",
