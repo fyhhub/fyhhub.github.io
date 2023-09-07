@@ -4,14 +4,17 @@ import giscusTalk from 'vitepress-plugin-comment-with-giscus';
 import { useData, useRoute } from 'vitepress';
 import 'vitepress-theme-demoblock/dist/theme/styles/index.css'
 import { useComponents } from './useComponents'
-import Playground from 'vitepress-plugin-vue-repl/components/index.vue'
+// import Playground from 'vitepress-plugin-vue-repl/components/index.vue'
 import './custom.css'
 export default {
     ...DefaultTheme,
-    enhanceApp(ctx) {
+    async enhanceApp(ctx) {
         DefaultTheme.enhanceApp(ctx);
-        useComponents(ctx.app)
-        ctx.app.component('VuePlayground', Playground);
+        useComponents(ctx.app);
+        if (!import.meta.env.SSR) {
+            const Playground = await import('vitepress-plugin-vue-repl/components/index.vue')
+            ctx.app.component('VuePlayground', Playground);
+        }
     },
     setup() {
         // 获取前言和路由
