@@ -13,7 +13,7 @@ export default {
         useComponents(ctx.app);
         if (!import.meta.env.SSR) {
             const Playground = await import('vitepress-plugin-vue-repl/components/index.vue')
-            ctx.app.component('VuePlayground', Playground);
+            ctx.app.component('VuePlayground', Playground.default);
         }
     },
     setup() {

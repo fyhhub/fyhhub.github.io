@@ -20,7 +20,7 @@ export default defineConfig({
       demoblockVitePlugin()
     ],
     optimizeDeps: {
-      include: ['@vue/repl']
+      // include: ['@vue/repl']
     }
   },
   markdown: {
