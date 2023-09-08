@@ -1,4 +1,2 @@
----
-index: false
----
-# Vue2面试题
+
+# Vue2
