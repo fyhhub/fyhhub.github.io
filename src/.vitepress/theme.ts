@@ -15,7 +15,8 @@ export const nav = [
       {
         text: '前端工程化',
         link: '/frontend-engineering/'
-      }
+      },
+      { text: '前端面经汇总', link: '/interview/' }
     ]
   },
   {
@@ -34,7 +35,6 @@ export const nav = [
   { text: '后端开发', link: '/backend/' },
   { text: '开发工具', link: '/tools/' },
   { text: '随笔', link: '/informal/' },
-  { text: '面经', link: '/interview/' },
   { text: 'Rust', link: '/rust-learn/' },
   { text: '留言板', link: '/comment/' }
 ];
