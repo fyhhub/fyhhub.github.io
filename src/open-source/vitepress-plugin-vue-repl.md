@@ -1,5 +1,4 @@
-# vitepress-plugin-vue-repl
-
+# [vitepress-plugin-vue-repl](https://www.npmjs.com/package/vitepress-plugin-vue-repl)
 
 ## Preview
 

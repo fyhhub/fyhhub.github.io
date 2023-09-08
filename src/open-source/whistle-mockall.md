@@ -1,4 +1,4 @@
-# whistle.mockall
+# [whistle.mockall](https://www.npmjs.com/package/whistle.mockall)
 
 ## 安装
 ```js
