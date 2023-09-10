@@ -9,16 +9,20 @@
     "dev": "vitepress dev src"
   },
   "dependencies": {
+    "@vue/repl": "^2.5.8",
+    "fflate": "^0.8.0",
     "flexsearch": "^0.7.31",
+    "markdown-it-container": "^3.0.0",
     "vitepress-plugin-comment-with-giscus": "^1.1.7",
     "vue": "^3.2.29"
   },
   "devDependencies": {
-    "mermaid": "^10.4.0",
+    "@types/node": "^20.5.9",
     "sass": "^1.66.1",
     "vitepress": "^1.0.0-rc.10",
     "vitepress-plugin-auto-sidebar": "^1.1.0",
     "vitepress-plugin-mermaid": "^2.0.14",
+    "vitepress-plugin-vue-repl": "0.0.6",
     "vitepress-theme-demoblock": "^3.0.3"
   }
 }

@@ -19,15 +19,15 @@
  */
 var removeElements = function (head, val) {
   let h = new ListNode(-1, head)
-  let res = h;
-  while(h.next) {
-    if (h.next.val === val) {
-      h.next = h.next.next
+  let cur = h;
+  while(cur.next) {
+    if (cur.next.val === val) {
+      cur.next = cur.next.next
       continue
     }
-    h = h.next
+    cur = cur.next
   }
-  return res.next;
+  return h.next
 };
 // @lc code=end
 

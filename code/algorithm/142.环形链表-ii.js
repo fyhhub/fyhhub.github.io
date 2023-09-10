@@ -20,22 +20,23 @@
 var detectCycle = function (head) {
   let fast = head;
   let slow = head;
-  while (fast && fast.next) {
-    fast = fast.next.next;
-    slow = slow.next;
-    // 快慢指针重合
-    if (slow === fast) {
-      // 从链表首节点开始
+
+  while(fast && fast.next) {
+    fast = fast.next.next
+    slow = slow.next
+
+    if (fast === slow) {
+      let index = head;
       let index1 = fast;
-      // 从相交点开始
-      let index2 = head;
-      while (index1 !== index2) {
-        index1 = index1.next;
-        index2 = index2.next;
+
+      while(index !== index1) {
+        index = index.next
+        index1 = index1.next
       }
-      return index2;
+
+      return index
     }
   }
-  return null;
+  return null
 };
 // @lc code=end

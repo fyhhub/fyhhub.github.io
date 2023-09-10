@@ -21,35 +21,53 @@
 var getIntersectionNode = function (headA, headB) {
   let cur1 = headA;
   let cur2 = headB;
-  let len1 = 0;
-  let len2 = 0;
-  // 获取链表A的长度
+
+  // 获取链表长度
+  let n1 = 0;
   while (cur1) {
-    len1++;
+    n1++
     cur1 = cur1.next;
   }
-  // 获取链表B的长度
+
+  // 获取链表长度
+  let n2 = 0;
   while (cur2) {
-    len2++;
+    n2++
     cur2 = cur2.next;
   }
-  // 恢复头指针
+
+  // 恢复指针
   cur1 = headA;
   cur2 = headB;
-  // 保证len1永远是最长的链表，len2永远是最短的链表
-  if (len1 < len2) {
-    [len1, len2] = [len2, len1][(cur1, cur2)] = [cur2, cur1];
+
+  // 交换指针，保证cur1永远是最短的链表
+  if (n1 > n2) {
+    [cur1, cur2] = [cur2, cur1]
+    let temp = n1;
+    n1 = n2;
+    n2 = temp;
   }
-  let i = len1 - len2;
-  // 移动cur1到 倒数len2长度的位置
-  while (i-- > 0) {
-    cur1 = cur1.next;
+
+  // 先让长的指针移动
+  let move = n2 - n1;
+  while(move-- > 0) {
+    cur2 = cur2.next;
   }
-  // 如果cur1 等于 cur2就停止循环
-  while (cur1 && cur1 !== cur2) {
+
+
+
+  // 此时cur1 和 cue2指针保持一致，同时移动两个指针
+  while(cur1 && cur2) {
+    if (cur1 === cur2) {
+      return cur1;
+    }
     cur1 = cur1.next;
     cur2 = cur2.next;
   }
-  return cur1;
+  return null
 };
 // @lc code=end
+
+// @after-stub-for-debug-begin
+module.exports = getIntersectionNode;
+// @after-stub-for-debug-end

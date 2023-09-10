@@ -1,4 +1,22 @@
----
-index: false
----
-# 面经汇总以及解答
+# 前端面经汇总
+
++ [字节跳动前端面经](https://www.nowcoder.com/discuss/702216?type=all&order=recall&pos=&page=1&ncTraceId=&channel=-1&source_id=search_all_nctrack&gio_id=20F1EB59F6FD31FAD435BEE8B652A731-1641826247965)
++ [金三银四的前端社招面经](https://juejin.cn/post/6939774328858738696)
++ [八百年不面试，一面试就面得一塌糊涂](https://juejin.cn/post/7273682292538933306)
++ [「2022」寒冬下我的面试知识点复盘【计算机网络】篇](https://juejin.cn/post/7166870049066582053)
++ [「2022」寒冬下我的面试知识点复盘【Vue3、Vue2、Vite】篇](https://juejin.cn/post/7166446028266733581)
++ [复盘：前端岗位的寒冬，用这3点进行自救](https://juejin.cn/post/7201491839815139389)
++ [劝退面经（下）](https://juejin.cn/post/7207444169358786618)
++ [2023开年第一面：滴滴](https://juejin.cn/post/7199065225759686712)
++ [美团前端常考面试题（必备）](https://juejin.cn/post/7205517870976909370)
++ [[面经] 5年前端 - 历时1个月收获7个offer🔥](https://juejin.cn/post/7142690757722243102)
++ [5年经验(专升本)入职B站分享](https://juejin.cn/post/7076676933697667085)
++ [年后被吊打的第一面](https://juejin.cn/post/7193979904458195005)
++ [面经｜三四月前端面试问题记录](https://juejin.cn/post/7088883914005184525)
++ [2年前端(外包经历) 6月部分面试记录 （高级、资深岗位）](https://juejin.cn/post/6989626582465789966)
++ [阿里腾讯面试梳理&个人成长经历分享](https://juejin.cn/post/6945625394154307592)
++ [阿里社招两年前端面经](https://juejin.cn/post/7007991848308310024)
++ [看完跳槽少说涨 5 K，前端面试从准备到谈薪完全指南（近万字精华）](https://juejin.cn/post/6844904029340827656)
++ [【新鲜面经】技术面试并不难，掘友经验带上岸 | 掘金技术征文展（第二弹）](https://juejin.cn/post/6844904130239037454)
++ [面试：接招人事(非技术性问题)](https://juejin.cn/post/6844904008335753224)
++ [前端 Offer 提速：如何写出有亮点的简历](https://juejin.cn/post/6952679000422498318)

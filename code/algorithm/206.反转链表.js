@@ -19,12 +19,12 @@
 var reverseList = function (head) {
   let pre = null;
   let cur = head;
-  while (cur) {
+  while(cur) {
     const next = cur.next;
     cur.next = pre;
-    pre = cur;
-    cur = next;
+    pre = cur
+    cur = next
   }
-  return pre;
+  return pre
 };
 // @lc code=end
