@@ -33,6 +33,10 @@ export default defineConfig({
   themeConfig: {
     sidebar,
     nav,
+    editLink: {
+      pattern: 'https://github.com/fyhhub/fyhhub.github.io/tree/main/src/:path',
+      text: '编辑此页面'
+    },
     search: {
       provider: 'local',
       options: {
