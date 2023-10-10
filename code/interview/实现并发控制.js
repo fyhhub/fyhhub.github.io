@@ -1,7 +1,3 @@
-# 实现Promise并发控制
-
-## 方式一
-```js
 async function asyncPool(limit, fns) {
   const res = []
   const exec = []
@@ -16,7 +12,9 @@ async function asyncPool(limit, fns) {
         exec.splice(exec.indexOf(execute), 1)
       })
       exec.push(p)
+      console.log(exec.length)
       if (exec.length >= limit) {
+        console.log('达到并发数量', limit)
         await Promise.race(exec)
       }
     }
@@ -24,10 +22,6 @@ async function asyncPool(limit, fns) {
 
   return Promise.all(res)
 }
-```
-
-
-```js
 
 // 示例测试用例
 async function runTest() {
@@ -89,55 +83,3 @@ function sleep(ms) {
 runTest().then(() => {
   console.log('执行完毕');
 }).catch(console.error);
-```
-
-## 方式二
-```js
-function asyncPool(fn, arr, limit = 10) {
-  let args = [...arr]   //不修改原参数数组
-  let results = []      //存放最终结果
-  let runningCount = 0  //正在运行的数量
-  let resultIndex = 0   //结果的下标，用于控制结果的顺序
-  let resultCount = 0   //结果的数量
-
-  return new Promise((resolve) => {
-    function run() {
-      while(runningCount < limit && args.length > 0) {
-        runningCount++
-        ((i)=> {        //闭包用于保存结果下标，便于在resolve时把结果放到合适的位置
-          let v = args.shift()
-          console.log('正在运行' + runningCount)
-          fn(v).then(val => {
-            results[i] = val
-          }, () => {
-            throw new Error(`An error occurred: ${v}`)
-          }).finally(() => {
-            runningCount--
-            resultCount++
-            if(resultCount === arr.length) {  //这里之所以用resultCount做判断，而不用results的长度和args的长度，是因为这两个都不准确
-              resolve(results)
-            } else {
-              run()
-            }
-          })          
-        })(resultIndex++)
-      }
-    }
-    run()
-  })
-}
-```
-
-
-```js
-
-//测试
-function getWeather(city) {
-  console.log(`开始获取${city}的天气`)
-  return fetch(`https://api2.jirengu.com/getWeather.php?city=${city}`).then(res=> res.json())
-}
-
-let citys = ['北京', '上海', '杭州', '成都', '武汉', '天津', '深圳', '广州', '合肥', '郑州']
-asyncPool(getWeather, citys, 2).then(results => console.log(results))
-
-```
