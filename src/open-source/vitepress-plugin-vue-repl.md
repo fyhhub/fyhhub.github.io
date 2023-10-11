@@ -19,6 +19,13 @@ div {
 }
 </style>
 ```
+```json
+{
+  "editorConfig": {
+    "layout": "vertical",
+  }
+}
+```
 :::
 ## install
 
@@ -109,3 +116,66 @@ div {
 
 + Monaco
 + CodeMirror
+
+
+
+## Vue Repl Config & imports
+
+
+
+```markdown{18-27}
+:::playground
+```vue
+<template>
+  <mrp-space>
+    <mrp-button type="primary">Primary</mrp-button>
+    <mrp-button>Secondary</mrp-button>
+    <mrp-button type="dashed">Dashed</mrp-button>
+    <mrp-button type="outline">Outline</mrp-button>
+    <mrp-button type="text">Text</mrp-button>
+  </mrp-space>
+</template>
+
+<script lang="ts" setup>
+import 'regenerator'
+import { MrpSpace, MrpButton } from '@tuhu/shop-mars-pc'
+</script>
+\``` # remove slash
+```json
+{
+  "imports": {
+    "ant-design-vue": "xxx"
+  },
+  "editorConfig": {
+    "layout": "vertical"
+  }
+}
+\``` # remove slash
+:::
+```
+
+
+editorConfig:
+
+```ts
+interface Props {
+  theme?: 'dark' | 'light'
+  autoResize?: boolean
+  showCompileOutput?: boolean
+  showImportMap?: boolean
+  showTsConfig?: boolean
+  clearConsole?: boolean
+  sfcOptions?: SFCOptions
+  layout?: 'horizontal' | 'vertical'
+  ssr?: boolean
+  previewOptions?: {
+    headHTML?: string
+    bodyHTML?: string
+    placeholderHTML?: string
+    customCode?: {
+      importCode?: string
+      useCode?: string
+    }
+  }
+}
+```

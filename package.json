@@ -22,7 +22,7 @@
     "vitepress": "^1.0.0-rc.10",
     "vitepress-plugin-auto-sidebar": "^1.1.0",
     "vitepress-plugin-mermaid": "^2.0.14",
-    "vitepress-plugin-vue-repl": "0.0.8",
+    "vitepress-plugin-vue-repl": "0.0.9",
     "vitepress-theme-demoblock": "^3.0.3"
   }
 }

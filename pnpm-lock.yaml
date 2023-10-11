@@ -11,7 +11,7 @@ specifiers:
   vitepress-plugin-auto-sidebar: ^1.1.0
   vitepress-plugin-comment-with-giscus: ^1.1.7
   vitepress-plugin-mermaid: ^2.0.14
-  vitepress-plugin-vue-repl: 0.0.8
+  vitepress-plugin-vue-repl: 0.0.9
   vitepress-theme-demoblock: ^3.0.3
   vue: ^3.2.29
 
@@ -29,7 +29,7 @@ devDependencies:
   vitepress: 1.0.0-rc.10_e3n6pnwg2k7txnqdohg4oknviu
   vitepress-plugin-auto-sidebar: 1.1.0
   vitepress-plugin-mermaid: 2.0.14_vitepress@1.0.0-rc.10
-  vitepress-plugin-vue-repl: 0.0.8
+  vitepress-plugin-vue-repl: 0.0.9
   vitepress-theme-demoblock: 3.0.3_e3n6pnwg2k7txnqdohg4oknviu
 
 packages:
@@ -2125,8 +2125,8 @@ packages:
       '@mermaid-js/mermaid-mindmap': 9.3.0
     dev: true
 
-  /vitepress-plugin-vue-repl/0.0.8:
-    resolution: {integrity: sha512-IRjPXUoDyeF3DVTjbaPTawuZNSKCr9XRBALcgJYOgsPoa6+GklqPSePttMPq4jiXY7Dy1GEKjOWeNNLjucJNfA==}
+  /vitepress-plugin-vue-repl/0.0.9:
+    resolution: {integrity: sha512-AmRsGrDBvj/58OcULNKpbG25YdDYJqoR11hz7jkmApQUF4yBRncqoWi+NTXD66fCnXRdgZj8HgTCIk6FpA56Xg==}
     dependencies:
       '@vue/repl': 2.5.8
       fflate: 0.8.0
