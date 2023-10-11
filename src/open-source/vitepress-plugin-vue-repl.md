@@ -120,18 +120,10 @@ div {
 :::playground
 ```vue
 <template>
-  <mrp-space>
-    <mrp-button type="primary">Primary</mrp-button>
-    <mrp-button>Secondary</mrp-button>
-    <mrp-button type="dashed">Dashed</mrp-button>
-    <mrp-button type="outline">Outline</mrp-button>
-    <mrp-button type="text">Text</mrp-button>
-  </mrp-space>
+  <a-button type="primary">Primary</a-button>
 </template>
 
 <script lang="ts" setup>
-import 'regenerator'
-import { MrpSpace, MrpButton } from '@tuhu/shop-mars-pc'
 </script>
 \``` # remove slash
 ```json
