@@ -19,13 +19,6 @@ div {
 }
 </style>
 ```
-```json
-{
-  "editorConfig": {
-    "layout": "vertical",
-  }
-}
-```
 :::
 ## install
 
