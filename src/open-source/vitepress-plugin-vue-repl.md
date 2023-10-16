@@ -3,7 +3,7 @@
 
 ## Preview
 
-:::playground CodeMirror
+:::playground
 ```vue
 <template>
   <div>playground  test</div>
@@ -18,6 +18,17 @@ div {
   color: red;
 }
 </style>
+```
+
+```json
+{
+  "imports": {
+    "ant-design-vue": "xxx"
+  },
+  "editorConfig": {
+    "layout": "vertical"
+  }
+}
 ```
 :::
 ## install
