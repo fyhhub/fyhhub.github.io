@@ -19,17 +19,6 @@ div {
 }
 </style>
 ```
-
-```json
-{
-  "imports": {
-    "ant-design-vue": "xxx"
-  },
-  "editorConfig": {
-    "layout": "vertical"
-  }
-}
-```
 :::
 ## install
 
