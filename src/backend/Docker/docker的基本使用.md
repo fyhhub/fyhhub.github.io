@@ -73,19 +73,19 @@ Docker 提供了各种命令来管理容器、镜像、网络、卷以及其他 
 
 ## 2. 镜像
 ### 2.1 拉取镜像
-```shell
+```bash
 docker pull nginx # 拉取最新版本镜像
 docker pull nginx:1.21 # 拉取指定版本
 docker pull registry.example.com/my-image # 拉取指定仓库的镜像
 ```
 
 ### 2.2 查看镜像
-```shell
+```bash
 docker images
 ```
 
 ### 2.3 删除镜像
-```shell
+```bash
 docker rmi nginx # 删除镜像
 docker rmi 镜像id # 指定镜像id后，删除镜像
 ```
@@ -96,8 +96,8 @@ docker rmi 镜像id # 指定镜像id后，删除镜像
 
 ### 3.1 启动容器
 
-```shell
-docker run [选项] `<镜像名称>`
+```bash
+docker run [选项] <镜像名称>
 ```
 
 - `[选项]` 是可选的容器运行选项，如端口映射、卷挂载等。
@@ -147,93 +147,90 @@ docker run -d -p 8081:80 -v /tmp/nginx-temp:/usr/share/nginx/html -e "NGINX_TEST
 `docker ps` 命令用于列出容器的信息，包括正在运行的容器。以下是一些常用的 `docker ps` 命令的用法和选项：
 
 1. `-a` 或 `--all`: 列出所有容器，包括已停止的容器。默认情况下，只显示正在运行的容器。
-    
+
 2. `-q` 或 `--quiet`: 仅显示容器的ID，而不显示容器的详细信息。
-    
+
 3. `--no-trunc`: 显示完整的容器命令，而不截断长命令。
-    
+
 4. `-n <number>`: 仅显示最后N个容器，例如，`-n 5` 会显示最后5个容器。
-    
+
 5. `-f` 或 `--filter`: 使用过滤器来过滤容器，例如，`-f "status=running"` 可以列出状态为运行中的容器。
-    
-6. `--format`: 自定义输出格式，允许你定义输出中显示的字段和格式。例如，`--format "table {{.ID}}\t{{.Names}}\t{{.Status}}"`。
-    
+
+6. `--format`: 自定义输出格式，允许你定义输出中显示的字段和格式
+
 7. `--last <number>`: 仅显示最后N个容器的信息，类似于 `-n` 选项，但逆序列出容器。
-    
+
 8. `--latest`, `-l` 或 `--last`: 列出最后一个创建的容器，通常是最后一个启动的容器。
-    
+
 9. `--no-trunc`: 显示完整的容器命令，而不截断长命令。
-    
+
 10. `--size`: 显示容器的大小信息，包括文件系统和卷的大小。
 
 
 **查看容器详情**
-```shell
-docker inspect <容器id>
+```bash
+docker inspect 容器id
 ```
 
 ### 3.3 容器交互
 
 - **使用 `docker exec` 进入容器**：
-    ```shell
-    docker exec -it <容器ID或名称> /bin/bash
+    ```bash
+    docker exec -it 容器ID或名称 /bin/bash
     ```
 - **使用 `docker attach` 连接到容器**：
-    ```shell
-    docker attach <容器ID或名称>
+    ```bash
+    docker attach 容器ID或名称
     ```
 
 ### 3.4 停止容器
-```shell
-docker stop <容器id>
+```bash
+docker stop 容器id
 ```
 
 ### 3.5 启动停止的容器
-```shell
-docker start <容器id>
+```bash
+docker start 容器id
 ```
 
 ### 3.6 删除容器
-```shell
-docker rm <容器id>
+```bash
+docker rm 容器id
 ```
 
 ### 3.7 卷操作
-Docker 卷（Docker Volumes）是用于在容器之间共享和持久化数据的机制。Docker 卷允许你将数据挂载到容器，以便在容器启动、停止、删除或迁移时保留数据。以下是使用 Docker 卷的基本方法：
 
-1. **创建 Docker 卷**:
-   ```bash
-   docker volume create my_volume
-   ```
-   这将创建一个名为 `my_volume` 的 Docker 卷。
+1. 创建 Docker 卷:
+```bash
+docker volume create my_volume
+```
 
-2. **查看 Docker 卷列表**:
-   ```bash
-   docker volume ls
-   ```
+2. 查看Docker卷列表:
 
-3. **挂载 Docker 卷到容器**:
-   ```bash
-   docker run -d -v my_volume:/app/data my_image
-   ```
+```bash
+docker volume ls
+```
 
-   这将启动一个容器，并将 `my_volume` 卷挂载到容器内的 `/app/data` 目录。
+1. 挂载 Docker 卷到容器:
+```bash
+docker run -d -v my_volume:/app/data my_image
+```
 
-4. **查看 Docker 卷的详细信息**:
-   ```bash
-   docker volume inspect my_volume
-   ```
+这将启动一个容器，并将 `my_volume` 卷挂载到容器内的 `/app/data` 目录。
 
-5. **删除 Docker 卷**:
-   ```bash
-   docker volume rm my_volume
-   ```
-   请注意，只有当没有容器使用该卷时才能成功删除。
+4. 查看 Docker 卷的详细信息:
+```bash
+docker volume inspect my_volume
+```
 
-6. **卷的持久性**:
+5. 删除 Docker 卷:
+```bash
+docker volume rm my_volume
+```
+请注意，只有当没有容器使用该卷时才能成功删除。
 
+6. 卷的持久性:
    Docker 卷是持久的，这意味着数据在容器被删除后仍然存在，可以供其他容器使用。这使得数据共享和数据持久性成为可能，尤其在容器编排和微服务架构中非常有用。
 
-7. **卷的备份和恢复**:
-
+7. 卷的备份和恢复:
    你可以使用备份工具或命令来备份 Docker 卷的数据，以便在需要时进行恢复。一种常见的方法是使用 `docker cp` 命令将卷的数据复制到本地文件系统，然后进行备份。
