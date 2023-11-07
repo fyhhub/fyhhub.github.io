@@ -2,6 +2,7 @@
 # Rust知识点梳理
 
 
+
 ## 语法
 ### 1. ref是什么语法
 ref可以直接创建一个引用：
@@ -28,10 +29,37 @@ fn main() {
 }
 ```
 
+## 生命周期
+
+### 1. &'static 和 T: 'static
+
+
++ &'static 对于生命周期有着非常强的要求：一个引用必须要活得跟剩下的程序一样久，才能被标注为 &'static。一般来讲字符串字面量是`'static`
++ &'static 生命周期针对的仅仅是引用，而不是持有该引用的变量，对于变量来说，还是要遵循相应的作用域规则
+
+例如这段代码， “Hello World” 是字符串字面量，因此它的生命周期是 `'static`， 但是string这个变量在函数执行完后就释放了。然而字符串字面量会一直存活
+```rust
+fn get_memory_location() -> (usize, usize) {
+  let string = "Hello World!";
+  // `string` 在这里被 drop 释放
+  // 虽然变量被释放，无法再被访问，但是数据依然还会继续存活
+}
+```
+
++ `T: 'static` 可以理解为 T 变量必须活得跟剩下的程序一样久这样的特征，并且T具有变量的所有权
++ `'static` 说明一个值活得跟剩下的程序一样久，可以认为它是一个Trait
++ `&'static` 说明一个引用活的跟剩下的程序一样久，这样的一个Trait
+
+**关键点回顾**
+
+- `T: 'a` 比 `&'a T` 更泛化，更灵活
+- `T: 'a` 接受所有权类型，内部含有引用的所有权类型，和引用
+- `&'a T` 只接受引用
+- 若 `T: 'static` 则 `T: 'a` 因为对于所有 `'a` 都有 `'static` >= `'a`
 
 ## 智能指针
 
-### 1. Box是什么
+### 1. Box
 **使用 Box\<T\> 可以将数据存储在堆上**
 
 ```rust
@@ -80,8 +108,12 @@ fn main() {
 }
 ```
 
+**Box 中还提供了一个非常有用的关联函数：`Box::leak`, 你需要一个在运行期初始化的值，但是可以全局有效，也就是和整个程序活得一样久，那么就可以使用 Box::leak**
 
-### 2. Rc 和 Arc是什么
+
+
+
+### 2. Rc 和 Arc
 `Rc`其实就是一个引用计数,它允许多个变量指针指向同一个`堆的的值`，正常来讲一个值只能拥有一个变量，每次`Rc::clone(&T)`克隆一个引用，它的引用计数就会`加1`。
 
 **希望在堆上分配一个对象供程序的多个部分使用且无法确定哪个部分最后一个结束时，就可以使用 Rc 成为数据值的所有者**
@@ -127,7 +159,7 @@ impl TreasureMap {
 - `Rc<T>` 是一个智能指针，实现了 `Deref` 特征，因此你无需先解开 `Rc` 指针，再使用里面的 `T`，而是可以直接使用 `T`
 
 
-### 3. Cell 和 RefCell是什么
+### 3. Cell 和 RefCell
 它可以在拥有不可变引用的同时修改目标数据，对于正常的代码实现来说，这个是不可能做到的
 
 
@@ -179,7 +211,7 @@ fn main() {
 ```
 
 
-### 4. Mutex 是什么
+### 4. Mutex
 一般在多线程中，为了实现共享数据，会使用到`Mutex`, 例如:
 ```rust
 use std::{
@@ -211,9 +243,53 @@ fn main() {
 }
 ```
 
+### 5. Deref
+```rust
+use std::ops::Deref;
+
+struct MyBox<T>(T);
+
+impl<T> MyBox<T> {
+  fn new(val: T) -> Self {
+    MyBox(val)
+  }
+}
+
+impl<T> Deref for MyBox<T> {
+  type Target = T;
+
+  fn deref(&self) -> &Self::Target {
+    &self.0
+  }
+}
+
+fn main() {
+  let y = MyBox::new(123);
+
+  println!("{}", *y);
+}
+```
+实现`Deref`特征，才可以正常的通过`*T`来获取一个引用的实际值。
+
+
+另外一个例子：
+```rust
+fn main() {
+    let s = MyBox::new(String::from("hello world"));
+    display(&s)
+    // 等价于 display(&(*s))
+}
+
+fn display(s: &str) {
+    println!("{}",s);
+}
+```
+
+**这里我们使用了之前自定义的智能指针 MyBox，并将其通过连续的隐式转换变成 &str 类型：首先 MyBox 被 Deref 成 String 类型，结果并不能满足 display 函数参数的要求，编译器发现 String 还可以继续 Deref 成 &str，最终成功的匹配了函数参数。**
+
 
 ## 枚举
-### 1. Cow是什么
+### 1. Cow
 Cow（Clone-on-Write）是 Rust 中一个很有意思且很重要的数据结构。它就像 Option 一样，在返回数据的时候，提供了一种可能：要么返回一个借用的数据（只读），要么返回一个拥有所有权的数据（可写）。
 
 ```rust
@@ -228,10 +304,10 @@ pub enum Cow<'a, B: ?Sized + 'a> where B: ToOwned,
 
 
 ## 特征
-### 1. ToOwned 是什么
+### 1. ToOwned
 [ToOwned](https://doc.rust-lang.org/std/borrow/trait.ToOwned.html) 是一个 trait，它可以把借用的数据克隆出一个拥有所有权的数据。
 
-### 2. Send/Sync是什么
+### 2. Send/Sync
 Send/Sync 是 Rust 并发安全的基础：
 + 如果一个类型 T 实现了 `Send trait`，意味着 T 可以安全地从一个线程移动到另一个线程，也就是说所有权可以在线程间移动。
 + 如果一个类型 T 实现了 `Sync trait`，则意味着 &T 可以安全地在多个线程中共享。一个类型 T 满足 Sync trait，当且仅当 &T 满足 Send trait。
@@ -337,6 +413,76 @@ fn main() {
 由于`Buffer` 实现了`Deref 和 DerefMut`, 所以buf 可以直接访问和操作数组
 
 
+
+### 5. TryFrom 反向转换enum
+```rust
+use std::convert::TryFrom;
+
+impl TryFrom<i32> for MyEnum {
+    type Error = ();
+
+    fn try_from(v: i32) -> Result<Self, Self::Error> {
+        match v {
+            x if x == MyEnum::A as i32 => Ok(MyEnum::A),
+            x if x == MyEnum::B as i32 => Ok(MyEnum::B),
+            x if x == MyEnum::C as i32 => Ok(MyEnum::C),
+            _ => Err(()),
+        }
+    }
+}
+```
+以上代码定义了从i32到MyEnum的转换，接着就可以使用TryInto来实现转换：
+```rust
+use std::convert::TryInto;
+
+fn main() {
+    let x = MyEnum::C as i32;
+
+    match x.try_into() {
+        Ok(MyEnum::A) => println!("a"),
+        Ok(MyEnum::B) => println!("b"),
+        Ok(MyEnum::C) => println!("c"),
+        Err(_) => eprintln!("unknown number"),
+    }
+}
+```
+
+但是实现比较繁琐，可以使用 [num_enum](https://docs.rs/num_enum/latest/num_enum/)
+
+也可以自己实现一个宏
+```rust
+#[macro_export]
+macro_rules! back_to_enum {
+    ($(#[$meta:meta])* $vis:vis enum $name:ident {
+        $($(#[$vmeta:meta])* $vname:ident $(= $val:expr)?,)*
+    }) => {
+        $(#[$meta])*
+        $vis enum $name {
+            $($(#[$vmeta])* $vname $(= $val)?,)*
+        }
+
+        impl std::convert::TryFrom<i32> for $name {
+            type Error = ();
+
+            fn try_from(v: i32) -> Result<Self, Self::Error> {
+                match v {
+                    $(x if x == $name::$vname as i32 => Ok($name::$vname),)*
+                    _ => Err(()),
+                }
+            }
+        }
+    }
+}
+
+back_to_enum! {
+    enum MyEnum {
+        A = 1,
+        B,
+        C,
+    }
+}
+
+```
 
 ## 文件操作
 
