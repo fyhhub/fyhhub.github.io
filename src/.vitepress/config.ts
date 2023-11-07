@@ -10,6 +10,7 @@ export default defineConfig({
   base: '/',
   outDir: path.resolve(__dirname, '../../docs'),
   lastUpdated: true,
+
   vite: {
     server: {
       host: '127.0.0.1',
@@ -33,6 +34,7 @@ export default defineConfig({
   themeConfig: {
     sidebar,
     nav,
+    outline: 'deep',
     editLink: {
       pattern: 'https://github.com/fyhhub/fyhhub.github.io/tree/main/src/:path',
       text: '编辑此页面'
