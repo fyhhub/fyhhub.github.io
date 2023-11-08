@@ -304,6 +304,7 @@ pub enum Cow<'a, B: ?Sized + 'a> where B: ToOwned,
 
 
 ## 特征
+
 ### 1. ToOwned
 [ToOwned](https://doc.rust-lang.org/std/borrow/trait.ToOwned.html) 是一个 trait，它可以把借用的数据克隆出一个拥有所有权的数据。
 
@@ -355,6 +356,8 @@ impl From<String> for Person {
 
 fn main() {
   let person = Person::from(String::from("123"));
+
+  // 注意这里一定要定义类型，可以将String类型转为 Person类型
   let it: Person = String::from("123").into();
   println!("{:?}", it);
 }
@@ -483,6 +486,142 @@ back_to_enum! {
 }
 
 ```
+
+### 6. AsRef 和 AsMut
+
+这两个Trait简单来讲，就是可以将一个变量或引用，转为另外一个引用，例如下面的代码：
+
+Any内部有一个`t`变量，我希望通过`as_ref()`, 把Any对象直接转成`t`的引用。
+
+**AsRef的泛型就是目标引用的类型, AsMut同理**
+
+```rust
+struct Any<T, U> {
+    t: T,
+    u: U,
+}
+
+impl<T, U> AsRef<T> for Any<T, U> {
+    fn as_ref(&self) -> &T {
+        &self.t
+    }
+}
+
+impl<T, U> AsMut<T> for Any<T, U> {
+    fn as_mut(&mut self) -> &mut T {
+        &mut self.t
+    }
+}
+
+fn main() {
+    let a = Any { t: vec![1, 2, 3], u: "hello world".to_owned() };
+    assert_eq!(a.as_ref(), &vec![1, 2, 3]);
+
+    let mut a = Any { t: vec![1, 2, 3], u: "hello world".to_owned() };
+    a.as_mut()[1] = 4;
+    assert_eq!(a.as_ref(), &vec![1, 4, 3]);
+}
+```
+
+### 7. Borrow和BorrowMut
+**使用引用作为函数参数的行为被称作借用，使用借用来规避某个变量的所有权发生移动**
+
+主要用来返回一个类型的引用。
+```rust
+use std::borrow::BorrowMut;
+
+fn check<T: BorrowMut<[i32]>>(mut s: T) {
+    s.borrow_mut()[0] = 42;
+}
+
+fn main() {
+    let mut v = vec![0, 1, 2];
+    check(&mut v);
+    assert_eq!(42, v[0]);
+}
+```
+
+也可以自定义
+```rust
+use std::borrow::{Borrow, BorrowMut};
+
+struct Wrapper<T>(T);
+
+impl<T> Borrow<T> for Wrapper<T> {
+    fn borrow(&self) -> &T {
+        &self.0
+    }
+}
+
+impl<T> BorrowMut<T> for Wrapper<T> {
+    fn borrow_mut(&mut self) -> &mut T {
+        &mut self.0
+    }
+}
+
+fn main() {
+    let w = Wrapper(42);
+    assert_eq!(42, *w.borrow());
+    
+    let mut w = Wrapper(0);
+    *w.borrow_mut() = 42;
+    assert_eq!(42, *w.borrow());
+}
+```
+
+### 8. ToOwned
+在Rust中，一般通过clone 方法来获取变量的副本。但有的类型，如&str 或 &[u8]等无法通过实现Clone trait 来实现 clone方法。于是便有了ToOwned trait。下面看一下定义：
+```rust
+trait ToOwned {
+    type Owned: Borrow<Self>;
+    fn to_owned(&self) -> Self::Owned;
+}
+```
+
+例子：
+```rust
+use std::borrow::Borrow;
+
+#[derive(Debug)]
+struct Any<'a, T> {
+    content: &'a T,
+}
+
+#[derive(Debug)]
+struct One<'a, T> {
+    any: Any<'a, T>,
+}
+
+impl<'a, T> std::borrow::Borrow<Any<'a, T>> for One<'a, T> {
+    fn borrow(&self) -> &Any<'a, T> {
+        &self.any
+    }
+}
+
+impl<'a, T> std::borrow::ToOwned for Any<'a, T> {
+    type Owned = One<'a, T>;
+    fn to_owned(&self) -> Self::Owned {
+        One {
+            any: Any {
+                content: self.content.clone(),
+            },
+        }
+    }
+}
+
+fn main() {
+    let content = "hello".to_owned();
+    let o = One { any: Any { content: &content },};
+    let b: &Any<String> = o.borrow();
+    println!("{:?}", b); // Any { content: "hello" }
+
+    let a = Any { content: &content };
+    let b = a.to_owned();
+    println!("{:?}", b); // One { any: Any { content: "hello" } }
+}
+```
+
+简单来讲，`to_owned`可以将一个类型拷贝，并返回新的类型
 
 ## 文件操作
 
