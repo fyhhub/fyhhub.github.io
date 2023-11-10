@@ -1,7 +1,8 @@
 # pnpm管理monorepo
 
 ## 配置文件
-```
+
+```yml
 # pnpm-workspace.yaml
 packages:
   # 所有在 packages/  子目录下的 package
