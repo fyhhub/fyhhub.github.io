@@ -20,3 +20,4 @@ packages:
 + `pnpm remove axios --filter  @monorepo/http` 删除某个包的依赖
 + `pnpm link --global <pkg>` 本地link包
 + `pnpm add lodash-test@npm:lodash@1.1` 给包取别名
++ `pnpm -r run build` 可以一次性执行所有包的`build`命令
