@@ -2,12 +2,24 @@
 
 基于`father`二次开发，支持了`vue2和vue3`的 `bundless` 编译
 
+```
+npm i @viwo/npm-flow -D
+```
 
 # Config
 
 支持以下配置项。
 
 ## 公共配置
+
+### vue
+```js
+{
+  vue: {
+     version: 2 | 3
+  }
+}
+```
 
 ### alias
 
