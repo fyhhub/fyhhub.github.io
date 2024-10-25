@@ -36,5 +36,6 @@ export const nav = [
   { text: '开发工具', link: '/tools/' },
   { text: '随笔', link: '/informal/' },
   { text: 'Rust', link: '/rust-learn/' },
+  { text: 'Python', link: '/python/' },
   { text: '留言板', link: '/comment/' }
 ];
