@@ -10,9 +10,6 @@
     "preview": "rspress preview"
   },
   "dependencies": {
-    "rspress": "1.45.8"
-  },
-  "devDependencies": {
-    "typescript": "^5.7.0"
+    "rspress": "^1.39.2"
   }
 }

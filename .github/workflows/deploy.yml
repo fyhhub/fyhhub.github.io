@@ -15,7 +15,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout 🛎️
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
@@ -25,13 +25,13 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install dependencies 📦
+      - name: Install dependencies
         run: npm install
 
-      - name: Build site 🔧
+      - name: Build site
         run: npm run build
 
-      - name: Upload Pages artifact 📤
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: doc_build
@@ -43,6 +43,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy to GitHub Pages 🚀
+      - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
