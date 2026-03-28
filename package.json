@@ -10,8 +10,8 @@
     "preview": "rspress preview"
   },
   "dependencies": {
-    "rspress": "1.35.2",
-    "@rspress/theme-default": "1.35.2"
+    "rspress": "1.29.3",
+    "@rspress/theme-default": "1.29.3"
   },
   "devDependencies": {
     "typescript": "^5.7.0"

@@ -6,17 +6,6 @@ export default defineConfig({
   icon: '/public/favicon.ico',
   // 插件
   plugins: [],
-  // 修复 rsbuild/rspack 构建兼容性问题
-  docBuildConfig: {
-    tools: {
-      esbuild: {
-        define: {
-          'process.env.NODE_ENV': JSON.stringify('production'),
-        },
-        target: 'es2015',
-      },
-    },
-  },
   // 主题配置
   themeConfig: {
     // 导航栏
