@@ -1,8 +1,6 @@
 import { defineConfig } from 'rspress';
-import path from 'path';
 
 export default defineConfig({
-  root: path.join(__dirname),
   title: "fyhub's blog",
   description: '前端成长记录、知识体系',
   icon: '/public/favicon.ico',
