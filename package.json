@@ -6,10 +6,10 @@
   "type": "module",
   "scripts": {
     "dev": "rspress dev",
-    "build": "rspress build",
+    "build": "npx rspress build docs",
     "preview": "rspress preview"
   },
   "dependencies": {
-    "rspress": "^1.39.2"
+    "rspress": "1.39.2"
   }
 }
