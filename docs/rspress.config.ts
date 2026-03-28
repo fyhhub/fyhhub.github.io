@@ -8,8 +8,8 @@ export default defineConfig({
   plugins: [],
   // 修复 rsbuild/rspack 构建兼容性问题
   docBuildConfig: {
-    esbuild: {
-      target: 'es2020',
+    output: {
+      target: 'web',
     },
   },
   // 主题配置
