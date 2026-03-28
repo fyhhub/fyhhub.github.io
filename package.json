@@ -1,28 +1,19 @@
 {
   "name": "fyh-blog",
-  "version": "2.0.0",
-  "description": "A project of vuepress-theme-hope",
+  "version": "3.0.0",
+  "description": "前端成长记录、知识体系",
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "vitepress build src",
-    "dev": "vitepress dev src"
+    "dev": "rspress dev",
+    "build": "rspress build",
+    "preview": "rspress preview"
   },
   "dependencies": {
-    "@vue/repl": "^2.5.8",
-    "fflate": "^0.8.0",
-    "flexsearch": "^0.7.31",
-    "markdown-it-container": "^3.0.0",
-    "vitepress-plugin-comment-with-giscus": "^1.1.7",
-    "vue": "^3.2.29"
+    "rspress": "^1.39.0",
+    "@rspress/theme-default": "^1.39.0"
   },
   "devDependencies": {
-    "@types/node": "^20.5.9",
-    "sass": "^1.66.1",
-    "vitepress": "^1.0.0-rc.10",
-    "vitepress-plugin-auto-sidebar": "^1.1.0",
-    "vitepress-plugin-mermaid": "^2.0.14",
-    "vitepress-plugin-vue-repl": "0.0.9",
-    "vitepress-theme-demoblock": "^3.0.3"
+    "typescript": "^5.7.0"
   }
 }
