@@ -6,6 +6,12 @@ export default defineConfig({
   icon: '/public/favicon.ico',
   // 插件
   plugins: [],
+  // 修复 rsbuild/rspack 构建兼容性问题
+  docBuildConfig: {
+    esbuild: {
+      target: 'es2020',
+    },
+  },
   // 主题配置
   themeConfig: {
     // 导航栏
