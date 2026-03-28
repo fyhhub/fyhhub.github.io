@@ -6,10 +6,15 @@
   "type": "module",
   "scripts": {
     "dev": "rspress dev",
-    "build": "rspress build",
+    "build": "npx rspress build docs",
     "preview": "rspress preview"
   },
   "dependencies": {
-    "rspress": "^1.39.2"
+    "markdown-it-mermaid": "^0.2.5",
+    "mermaid": "^11.13.0",
+    "rspress": "1.39.2"
+  },
+  "devDependencies": {
+    "@theguild/remark-mermaid": "^0.3.0"
   }
 }
