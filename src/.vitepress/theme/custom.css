@@ -1,9 +1,0 @@
-.text:after {
-  content: "";
-  background: transparent;
-}
-
-.container {
-  overflow: initial;
-  padding: 0;
-}
