@@ -7,7 +7,9 @@ export default {
   themeConfig: {
     nav: [
       { text: '首页', link: '/' },
-      { text: 'Agent', link: '/agent/' },
+      { text: 'AI进阶之路', link: '/agent/' },
+      { text: '前端成长记录', link: '/frontend-basic/' },
+      { text: 'AI知识体系', link: '/agent/' },
       { text: 'GitHub', link: 'https://github.com/fyhhub/fyhhub.github.io' },
     ],
     outline: 3,

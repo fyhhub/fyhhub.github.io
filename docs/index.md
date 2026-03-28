@@ -3,24 +3,27 @@ pageType: home
 
 hero:
   name: AI进阶之路
-  text: OpenCode Agent 系统学习笔记
-  tagline: 前端成长记录 · AI Agent 源码解析 · 知识体系
+  text: 前端成长记录 · AI Agent 知识体系
+  tagline: 从前端开发到 AI Agent，沉淀技术积累与实践
   actions:
-    - text: 开始学习 Agent
-      link: /agent/
+    - text: 开始学习
+      link: /frontend-basic/
       type: 'primary'
-    - text: GitHub
-      link: https://github.com/fyhhub/fyhhub.github.io
-      type: 'default'
 
 features:
   - icon: 🤖
-    title: OpenCode Agent
-    details: Agent 核心实现原理、主子调度、权限系统
-  - icon: 🔌
-    title: MCP 协议
-    details: Model Context Protocol 实现原理与代码示例
-  - icon: 🛠️
-    title: SKILL 系统
-    details: SKILL 实现原理与最小化示例
+    title: AI进阶之路
+    details: OpenCode Agent 核心原理 · MCP 协议 · SKILL 系统 · 源码解析
+    link: /agent/
+    linkText: 探索 Agent
+  - icon: 🚀
+    title: 前端成长记录
+    details: 前端基础 · 前端进阶 · 前端工程化 · 算法 · 计算机基础
+    link: /frontend-basic/
+    linkText: 开始学习
+  - icon: 📚
+    title: AI知识体系
+    details: AI Agent 开发实践 · MCP 服务器实现 · SKILL 编写 · 工具链构建
+    link: /agent/
+    linkText: 深入学习
 ---
