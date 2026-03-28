@@ -1,6 +1,4 @@
-import { defineConfig } from 'rspress';
-
-export default defineConfig({
+const config = {
   title: "fyhub's blog",
   description: '前端成长记录、知识体系',
   themeConfig: {
@@ -33,4 +31,5 @@ export default defineConfig({
     outline: 3,
     search: {},
   },
-});
+};
+module.exports = config;
