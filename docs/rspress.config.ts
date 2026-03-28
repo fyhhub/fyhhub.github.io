@@ -8,8 +8,13 @@ export default defineConfig({
   plugins: [],
   // 修复 rsbuild/rspack 构建兼容性问题
   docBuildConfig: {
-    output: {
-      target: 'web',
+    tools: {
+      esbuild: {
+        define: {
+          'process.env.NODE_ENV': JSON.stringify('production'),
+        },
+        target: 'es2015',
+      },
     },
   },
   // 主题配置
