@@ -12,7 +12,8 @@
   "dependencies": {
     "markdown-it-mermaid": "^0.2.5",
     "mermaid": "^11.13.0",
-    "rspress": "1.43.0"
+    "rspress": "1.43.0",
+    "@rsbuild/plugin-node-polyfill": "1.2.0"
   },
   "devDependencies": {
     "@theguild/remark-mermaid": "^0.3.0"
