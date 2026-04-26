@@ -1,8 +1,12 @@
 import { remarkMermaid } from '@theguild/remark-mermaid';
+import { pluginNodePolyfill } from '@rsbuild/plugin-node-polyfill';
 
 export default {
   title: "AI进阶之路",
   description: '前端成长记录、知识体系、AI Agent 学习笔记',
+  builderConfig: {
+    plugins: [pluginNodePolyfill()],
+  },
   markdown: {
     mdxRs: false,
     remarkPlugins: [[remarkMermaid]],
