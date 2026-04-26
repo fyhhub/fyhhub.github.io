@@ -6,9 +6,9 @@
   "type": "module",
   "scripts": {
     "dev": "rspress dev",
-    "build": "node scripts/patch-rsbuild.js && npx rspress build docs",
+    "build": "node scripts/patch-rsbuild.cjs && npx rspress build docs",
     "preview": "rspress preview",
-    "postinstall": "node scripts/patch-rsbuild.js || true"
+    "postinstall": "node scripts/patch-rsbuild.cjs || true"
   },
   "dependencies": {
     "markdown-it-mermaid": "^0.2.5",
