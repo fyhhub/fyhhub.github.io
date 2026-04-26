@@ -50,6 +50,11 @@ export default {
             '/agent/SKILL/SKILL实现原理',
           ],
         },
+        {
+          text: '⭐ Star 分类',
+          link: '/agent/star/',
+          collapsed: false,
+        },
       ],
     },
     outline: 3,
