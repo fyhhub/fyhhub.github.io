@@ -5,10 +5,12 @@ export default {
   title: "AI进阶之路",
   description: '前端成长记录、知识体系、AI Agent 学习笔记',
   builderConfig: {
-    performance: {
-      removeNodeEnvDefine: true,
-    },
     plugins: [pluginNodePolyfill()],
+    source: {
+      define: {
+        'process.env.NODE_ENV': 'process.env.NODE_ENV',
+      },
+    },
   },
   markdown: {
     mdxRs: false,
