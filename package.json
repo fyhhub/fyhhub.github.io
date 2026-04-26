@@ -7,7 +7,8 @@
   "scripts": {
     "dev": "rspress dev",
     "build": "npx rspress build docs",
-    "preview": "rspress preview"
+    "preview": "rspress preview",
+    "postinstall": "node -e \"try{const f=require.resolve(\"@rsbuild/core/compiled/postcss-load-config/index.js\");require(\"fs\").writeFileSync(f,require(\"fs\").readFileSync(f,\"utf8\").replace(\"process.env.NODE_ENV =\\"development\\"\",\"var _e=\\"development\\"\"))}catch(e){}\" || true"
   },
   "dependencies": {
     "markdown-it-mermaid": "^0.2.5",
