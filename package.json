@@ -1,20 +1,15 @@
 {
   "name": "fyh-blog",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "前端成长记录、知识体系",
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "dev": "rspress dev",
-    "build": "rspress build docs",
-    "preview": "rspress preview"
+    "dev": "vitepress dev docs",
+    "build": "vitepress build docs",
+    "preview": "vitepress preview docs"
   },
   "dependencies": {
-    "markdown-it-mermaid": "^0.2.5",
-    "mermaid": "^11.13.0",
-    "rspress": "1.39.2"
-  },
-  "devDependencies": {
-    "@theguild/remark-mermaid": "^0.3.0"
+    "vitepress": "^1.6.4"
   }
 }

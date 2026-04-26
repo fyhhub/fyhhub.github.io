@@ -2,3 +2,4 @@ node_modules/
 doc_build/
 *.pyc
 __pycache__/
+.gstack/
