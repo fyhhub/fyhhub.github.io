@@ -3,11 +3,6 @@ import { remarkMermaid } from '@theguild/remark-mermaid';
 export default {
   title: "AI进阶之路",
   description: '前端成长记录、知识体系、AI Agent 学习笔记',
-  builderConfig: {
-    performance: {
-      removeNodeEnvDefine: true,
-    },
-  },
   markdown: {
     mdxRs: false,
     remarkPlugins: [[remarkMermaid]],
