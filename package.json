@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "rspress dev",
-    "build": "npx rspress build docs",
+    "build": "node scripts/patch-rsbuild.js && npx rspress build docs",
     "preview": "rspress preview",
     "postinstall": "node scripts/patch-rsbuild.js || true"
   },
