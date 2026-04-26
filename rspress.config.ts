@@ -1,4 +1,5 @@
 import { remarkMermaid } from '@theguild/remark-mermaid';
+import { pluginNodePolyfill } from '@rsbuild/plugin-node-polyfill';
 
 export default {
   title: "AI进阶之路",
@@ -7,6 +8,7 @@ export default {
     performance: {
       removeNodeEnvDefine: true,
     },
+    plugins: [pluginNodePolyfill()],
   },
   markdown: {
     mdxRs: false,
