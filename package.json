@@ -12,10 +12,13 @@
   "dependencies": {
     "markdown-it-mermaid": "^0.2.5",
     "mermaid": "^11.13.0",
-    "rspress": "1.43.0",
+    "rspress": "1.39.2",
     "tsx": "^4.19.0"
   },
   "devDependencies": {
     "@theguild/remark-mermaid": "^0.3.0"
+  },
+  "overrides": {
+    "@rsbuild/core": "1.1.12"
   }
 }
